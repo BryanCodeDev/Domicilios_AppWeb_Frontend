@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import Navbar from '../../components/shared/Navbar.jsx';
 import { getOrder } from '../../services/api/orders';
 import Loader from '../../components/shared/Loader.jsx';
 import StatusBadge from '../../components/orders/StatusBadge.jsx';
@@ -17,14 +16,12 @@ const ClientOrderDetail = () => {
 
   if (loading) return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
       <div className="flex justify-center py-20"><Loader size="lg" /></div>
     </div>
   );
 
   if (!order) return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-20 text-center">
         <div className="w-20 h-20 bg-brand-elevated rounded-full flex items-center justify-center mx-auto mb-4">
           <Package size={32} className="text-brand-subtle" />
@@ -37,7 +34,6 @@ const ClientOrderDetail = () => {
 
   return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center gap-3 mb-8 animate-fade-in">
           <Link to="/orders" className="p-2 rounded-lg hover:bg-brand-surface transition text-brand-muted hover:text-brand-text">

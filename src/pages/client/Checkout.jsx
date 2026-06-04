@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from '../../components/shared/Navbar.jsx';
 import Button from '../../components/shared/Button.jsx';
 import StatusBadge from '../../components/orders/StatusBadge.jsx';
 import Loader from '../../components/shared/Loader.jsx';
@@ -11,7 +10,6 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
       <div className="max-w-2xl mx-auto px-4 py-8">
         <div className="flex items-center gap-3 mb-8">
           <button onClick={() => navigate(-1)} className="p-2 rounded-lg hover:bg-brand-surface transition">

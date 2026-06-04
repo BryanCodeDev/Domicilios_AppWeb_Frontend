@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from '../../components/shared/Navbar.jsx';
 import Button from '../../components/shared/Button.jsx';
 import { TrendingUp, DollarSign, ShoppingBag, Clock } from 'lucide-react';
 
@@ -13,7 +12,6 @@ const BusinessStats = () => {
 
   return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold font-display">Estadísticas</h1>

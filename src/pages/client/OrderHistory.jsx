@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from '../../components/shared/Navbar.jsx';
 import Button from '../../components/shared/Button.jsx';
 import { getMyOrders } from '../../services/api/orders';
 import StatusBadge from '../../components/orders/StatusBadge.jsx';
@@ -17,7 +16,6 @@ const OrderHistory = () => {
 
   return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold font-display mb-2">Mis Pedidos</h1>
         <p className="text-brand-muted mb-8">Historial de todos tus pedidos</p>

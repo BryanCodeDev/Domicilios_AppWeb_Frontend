@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getBusinessById } from '../../services/api/businesses';
 import { getProductsByBusiness } from '../../services/api/products';
-import Navbar from '../../components/shared/Navbar.jsx';
-import Button from '../../components/shared/Button.jsx';
 import Loader from '../../components/shared/Loader.jsx';
 import { Star, Clock, MapPin, ShoppingCart, Plus, ChevronLeft } from 'lucide-react';
 
@@ -22,14 +20,12 @@ const ClientBusinessDetail = () => {
 
   if (loading) return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
       <div className="flex justify-center py-20"><Loader size="lg" /></div>
     </div>
   );
 
   if (!business) return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
       <div className="max-w-7xl mx-auto px-4 py-20 text-center">
         <p className="text-brand-muted">Negocio no encontrado</p>
         <Link to="/"><Button variant="primary" className="mt-4">Volver al inicio</Button></Link>
@@ -39,8 +35,6 @@ const ClientBusinessDetail = () => {
 
   return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
-
       <div className="relative h-48 bg-gradient-to-r from-brand-primary to-brand-secondary">
         <div className="absolute inset-0 bg-black/30 flex items-end p-6">
           <div>

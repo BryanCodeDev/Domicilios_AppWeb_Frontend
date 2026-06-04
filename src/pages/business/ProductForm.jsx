@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Navbar from '../../components/shared/Navbar.jsx';
 import Button from '../../components/shared/Button.jsx';
 import { createProduct, updateProduct } from '../../services/api/products';
 import { useAuthStore } from '../../store/authStore';
@@ -33,7 +32,6 @@ const ProductForm = () => {
 
   return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
       <div className="max-w-2xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold font-display mb-8">
           {isEditing ? 'Editar' : 'Crear'} Producto

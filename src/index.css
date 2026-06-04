@@ -3,16 +3,38 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-background: #FAFAFA;
+    --color-surface: #FFFFFF;
+    --color-elevated: #F5F5F5;
+    --color-text: #212121;
+    --color-muted: #666666;
+    --color-subtle: #AAAAAA;
+  }
+
+  .dark {
+    --color-background: #0D0D0D;
+    --color-surface: #161616;
+    --color-elevated: #1F1F1F;
+    --color-text: #F5F5F5;
+    --color-muted: #A0A0A0;
+    --color-subtle: #5A5A5A;
+  }
+
   * {
     box-sizing: border-box;
   }
 
   body {
-    @apply bg-brand-background text-brand-text font-body antialiased;
+    @apply font-body antialiased;
+    background-color: var(--color-background);
+    color: var(--color-text);
   }
 
   #root {
-    @apply min-h-screen bg-brand-background;
+    min-height: 100vh;
+    background-color: var(--color-background);
+    color: var(--color-text);
   }
 
   ::-webkit-scrollbar {
@@ -21,21 +43,39 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-brand-surface;
+    background-color: var(--color-surface);
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-brand-subtle rounded;
+    background-color: var(--color-subtle);
+    border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-brand-muted;
+    background-color: var(--color-muted);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--color-subtle);
+    border-radius: 2px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-muted);
   }
 }
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .btn-primary {
@@ -43,7 +83,7 @@
   }
 
   .btn-secondary {
-    @apply btn bg-brand-secondary hover:bg-brand-secondaryDark text-brand-background active:scale-95;
+    @apply btn bg-brand-secondary hover:bg-brand-secondaryDark active:scale-95;
   }
 
   .btn-ghost {
@@ -67,54 +107,36 @@
   }
 
   .status-pending {
-    @apply status-badge bg-yellow-500/10 text-yellow-500;
+    @apply status-badge bg-yellow-500/10 text-yellow-600 dark:text-yellow-500;
   }
 
   .status-accepted {
-    @apply status-badge bg-blue-500/10 text-blue-500;
+    @apply status-badge bg-blue-500/10 text-blue-600 dark:text-blue-400;
   }
 
   .status-assigned {
-    @apply status-badge bg-purple-500/10 text-purple-500;
+    @apply status-badge bg-purple-500/10 text-purple-600 dark:text-purple-400;
   }
 
   .status-picked-up {
-    @apply status-badge bg-orange-500/10 text-orange-500;
+    @apply status-badge bg-orange-500/10 text-orange-600 dark:text-orange-400;
   }
 
   .status-in-transit {
-    @apply status-badge bg-cyan-500/10 text-cyan-500;
+    @apply status-badge bg-cyan-500/10 text-cyan-600 dark:text-cyan-400;
   }
 
   .status-delivered {
-    @apply status-badge bg-green-500/10 text-green-500;
+    @apply status-badge bg-green-500/10 text-green-600 dark:text-green-400;
   }
 
   .status-cancelled {
-    @apply status-badge bg-red-500/10 text-red-500;
+    @apply status-badge bg-red-500/10 text-red-600 dark:text-red-400;
   }
 }
 
 @layer utilities {
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-brand-secondary;
-  }
-
-  .bg-gradient-animated {
-    background: linear-gradient(-45deg, #FF4D00, #FFB800, #FF4D00, #FFB800);
-    background-size: 400% 400%;
-    animation: gradient 8s ease infinite;
-  }
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
   }
 }

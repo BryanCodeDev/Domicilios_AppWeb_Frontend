@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from '../../components/shared/Navbar.jsx';
 import Button from '../../components/shared/Button.jsx';
 import Loader from '../../components/shared/Loader.jsx';
 import { Bike, MapPin, Clock, DollarSign, ChevronRight } from 'lucide-react';
@@ -13,7 +12,6 @@ const RiderDashboard = () => {
 
   return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div>

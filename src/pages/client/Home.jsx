@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getBusinesses } from '../../services/api/businesses';
-import Navbar from '../../components/shared/Navbar.jsx';
 import Button from '../../components/shared/Button.jsx';
 import Loader from '../../components/shared/Loader.jsx';
 import { Store, MapPin, Clock, Star, Search, SlidersHorizontal } from 'lucide-react';
@@ -39,8 +38,6 @@ const ClientHome = () => {
 
   return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
-
       <div className="relative h-72 bg-gradient-to-br from-brand-primary via-brand-primaryDark to-brand-secondary overflow-hidden">
         <div className="absolute inset-0 bg-black/20" />
         <div className="absolute inset-0 flex items-center justify-center">

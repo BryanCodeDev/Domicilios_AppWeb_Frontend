@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../../components/shared/Navbar.jsx';
-import { getBusinessOrders } from '../../services/api/orders';
 import Button from '../../components/shared/Button.jsx';
+import { getBusinessOrders } from '../../services/api/orders';
 import StatusBadge from '../../components/orders/StatusBadge.jsx';
 import Loader from '../../components/shared/Loader.jsx';
 import { ChevronRight, MapPin, Phone, Package } from 'lucide-react';
@@ -18,7 +17,6 @@ const Orders = () => {
 
   return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div>

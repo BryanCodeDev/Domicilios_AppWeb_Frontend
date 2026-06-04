@@ -1,6 +1,5 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import Navbar from '../../components/shared/Navbar.jsx';
 import Button from '../../components/shared/Button.jsx';
 import StatusBadge from '../../components/orders/StatusBadge.jsx';
 import Loader from '../../components/shared/Loader.jsx';
@@ -17,7 +16,6 @@ const RiderActiveOrder = () => {
 
   return (
     <div className="min-h-screen bg-brand-background">
-      <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center gap-3 mb-8">
           <Link to="/rider" className="p-2 rounded-lg hover:bg-brand-surface transition text-brand-muted hover:text-brand-text">
