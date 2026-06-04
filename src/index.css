@@ -3,7 +3,118 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    box-sizing: border-box;
+  }
+
   body {
-    @apply bg-light text-dark;
+    @apply bg-brand-background text-brand-text font-body antialiased;
+  }
+
+  #root {
+    @apply min-h-screen bg-brand-background;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-brand-surface;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-brand-subtle rounded;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-brand-muted;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand-primary hover:bg-brand-primaryDark active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply btn bg-brand-secondary hover:bg-brand-secondaryDark text-brand-background active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply btn text-brand-muted hover:text-brand-text hover:bg-brand-surface;
+  }
+
+  .btn-outline {
+    @apply btn border border-brand-subtle hover:border-brand-primary hover:text-brand-primary;
+  }
+
+  .input {
+    @apply w-full px-4 py-3 bg-brand-surface border border-brand-subtle rounded-lg text-brand-text placeholder-brand-subtle focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent transition;
+  }
+
+  .card {
+    @apply bg-brand-surface border border-brand-subtle rounded-xl p-4;
+  }
+
+  .status-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .status-pending {
+    @apply status-badge bg-yellow-500/10 text-yellow-500;
+  }
+
+  .status-accepted {
+    @apply status-badge bg-blue-500/10 text-blue-500;
+  }
+
+  .status-assigned {
+    @apply status-badge bg-purple-500/10 text-purple-500;
+  }
+
+  .status-picked-up {
+    @apply status-badge bg-orange-500/10 text-orange-500;
+  }
+
+  .status-in-transit {
+    @apply status-badge bg-cyan-500/10 text-cyan-500;
+  }
+
+  .status-delivered {
+    @apply status-badge bg-green-500/10 text-green-500;
+  }
+
+  .status-cancelled {
+    @apply status-badge bg-red-500/10 text-red-500;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-brand-secondary;
+  }
+
+  .bg-gradient-animated {
+    background: linear-gradient(-45deg, #FF4D00, #FFB800, #FF4D00, #FFB800);
+    background-size: 400% 400%;
+    animation: gradient 8s ease infinite;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

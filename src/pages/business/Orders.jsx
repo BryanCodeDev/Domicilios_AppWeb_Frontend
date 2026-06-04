@@ -1,59 +1,87 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/shared/Navbar.jsx';
 import { getBusinessOrders } from '../../services/api/orders';
-
-const statusColors = {
-  PENDING: 'bg-yellow-100 text-yellow-800',
-  ACCEPTED: 'bg-blue-100 text-blue-800',
-  ASSIGNED: 'bg-purple-100 text-purple-800'
-};
+import Button from '../../components/shared/Button.jsx';
+import StatusBadge from '../../components/orders/StatusBadge.jsx';
+import Loader from '../../components/shared/Loader.jsx';
+import { ChevronRight, MapPin, Phone, Package } from 'lucide-react';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getBusinessOrders().then(res => setOrders(res.orders || [])).finally(() => setLoading(false));
+    getBusinessOrders().then(res => {
+      setOrders(res.orders || []);
+    }).finally(() => setLoading(false));
   }, []);
 
   return (
-    <div className="min-h-screen bg-light">
+    <div className="min-h-screen bg-brand-background">
       <Navbar />
-      
-      <div className="px-4 py-6">
-        <h1 className="text-2xl font-bold mb-4 text-dark">Pedidos Recibidos</h1>
-        
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold font-display">Pedidos Recibidos</h1>
+            <p className="text-brand-muted mt-1">Gestiona los pedidos de tu negocio</p>
+          </div>
+          <span className="text-sm text-brand-muted bg-brand-surface px-3 py-1 rounded-full border border-brand-subtle">
+            {orders.length} pedidos
+          </span>
+        </div>
+
         {loading ? (
-          <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <div className="flex justify-center py-20">
+            <Loader size="lg" />
           </div>
         ) : orders.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg">
-            <p className="text-gray-500">No hay pedidos pendientes</p>
+          <div className="text-center py-20 card">
+            <div className="w-16 h-16 bg-brand-elevated rounded-full flex items-center justify-center mx-auto mb-4">
+              <Package size={28} className="text-brand-subtle" />
+            </div>
+            <p className="text-brand-muted font-medium">No hay pedidos pendientes</p>
+            <p className="text-sm text-brand-subtle mt-1">Los nuevos pedidos aparecerán aquí</p>
           </div>
         ) : (
           <div className="space-y-4">
-            {orders.map(order => (
-              <div key={order.id} className="bg-white rounded-lg shadow p-4">
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <p className="font-semibold">{order.client?.nombre}</p>
-                    <p className="text-sm text-gray-500">{order.client?.phone}</p>
+            {orders.map((order, idx) => (
+              <div
+                key={order.id}
+                className="card hover:border-brand-primary/40 hover:shadow-lg hover:shadow-brand-primary/5 transition-all duration-300 animate-fade-in"
+                style={{ animationDelay: `${idx * 50}ms` }}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-brand-elevated rounded-xl flex items-center justify-center shrink-0">
+                      <Package size={22} className="text-brand-primary" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-3 mb-1">
+                        <h3 className="font-semibold text-brand-text">{order.client?.nombre || 'Cliente'}</h3>
+                        <StatusBadge status={order.estado} />
+                      </div>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-brand-muted">
+                        {order.client?.phone && (
+                          <span className="flex items-center gap-1">
+                            <Phone size={12} />
+                            {order.client.phone}
+                          </span>
+                        )}
+                        <span className="flex items-center gap-1">
+                          <MapPin size={12} />
+                          {order.direccion_entrega}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <span className={`px-2 py-1 rounded text-xs ${statusColors[order.estado] || 'bg-gray-100'}`}>
-                    {order.estado}
-                  </span>
-                </div>
-                <p className="text-gray-600 mb-2">{order.direccion_entrega}</p>
-                <div className="flex justify-between items-center">
-                  <p className="font-bold text-primary">${order.total?.toLocaleString('es-CO')}</p>
-                  <div className="flex gap-2">
-                    <button className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700">
-                      Aceptar
-                    </button>
-                    <button className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700">
-                      Rechazar
-                    </button>
+
+                  <div className="flex items-center gap-3 sm:flex-col sm:items-end">
+                    <span className="text-lg font-bold font-display text-brand-text">
+                      ${order.total?.toLocaleString('es-CO')}
+                    </span>
+                    <Button variant="ghost" size="sm" className="gap-1">
+                      Detalle <ChevronRight size={14} />
+                    </Button>
                   </div>
                 </div>
               </div>

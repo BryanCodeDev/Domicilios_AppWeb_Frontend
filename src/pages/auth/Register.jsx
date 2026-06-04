@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
+import { Mail, Lock, User, Phone, AlertCircle, Loader2 } from 'lucide-react';
+import Button from '../../components/shared/Button.jsx';
+import Loader from '../../components/shared/Loader.jsx';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -30,57 +33,75 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-secondary to-primary flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
+    <div className="min-h-screen bg-gradient-to-br from-brand-secondary/20 via-brand-background to-brand-primary/20 flex items-center justify-center px-4 animate-fade-in">
+      <div className="max-w-md w-full card animate-slide-up">
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold font-display text-gradient">
             Domicilios
           </h1>
-          <p className="text-gray-600 mt-2">Crea tu cuenta</p>
+          <p className="text-brand-muted mt-2">Crea tu cuenta</p>
         </div>
 
         {error && (
-          <div className="bg-red-50 text-red-600 p-3 rounded mb-4 text-center">
+          <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 text-red-500 mb-4 text-center animate-fade-in">
+            <AlertCircle size={18} />
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <input
-              type="text"
-              placeholder="Nombre completo"
-              value={formData.nombre}
-              onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-              required
-            />
+            <label htmlFor="nombre" className="block text-sm font-medium text-brand-muted mb-1">Nombre completo</label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted size-5" />
+              <input
+                type="text"
+                id="nombre"
+                placeholder="Nombre completo"
+                value={formData.nombre}
+                onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+                className="input pl-10"
+                required
+              />
+            </div>
           </div>
           <div className="mb-4">
-            <input
-              type="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-              required
-            />
+            <label htmlFor="email" className="block text-sm font-medium text-brand-muted mb-1">Email</label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted size-5" />
+              <input
+                type="email"
+                id="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="input pl-10"
+                required
+              />
+            </div>
           </div>
           <div className="mb-4">
-            <input
-              type="password"
-              placeholder="Contraseña"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-              required
-            />
+            <label htmlFor="password" className="block text-sm font-medium text-brand-muted mb-1">Contraseña</label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted size-5" />
+              <input
+                type="password"
+                id="password"
+                placeholder="Contraseña"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                className="input pl-10"
+                required
+              />
+            </div>
           </div>
           <div className="mb-4">
+            <label htmlFor="rol" className="block text-sm font-medium text-brand-muted mb-1">Rol</label>
             <select
+              id="rol"
               value={formData.rol}
               onChange={(e) => setFormData({ ...formData, rol: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="input"
             >
               <option value="cliente">Cliente</option>
               <option value="repartidor">Repartidor</option>
@@ -88,27 +109,35 @@ const Register = () => {
             </select>
           </div>
           <div className="mb-4">
-            <input
-              type="tel"
-              placeholder="Teléfono (opcional)"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-            />
+            <label htmlFor="phone" className="block text-sm font-medium text-brand-muted mb-1">Teléfono (opcional)</label>
+            <div className="relative">
+              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted size-5" />
+              <input
+                type="tel"
+                id="phone"
+                placeholder="Teléfono (opcional)"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className="input pl-10"
+              />
+            </div>
           </div>
 
-          <button
+          <Button
             type="submit"
+            variant="secondary"
+            size="lg"
+            className="w-full"
+            loading={loading}
             disabled={loading}
-            className="w-full bg-secondary text-white py-3 rounded-lg font-semibold hover:bg-secondaryDark transition disabled:opacity-50"
           >
             {loading ? 'Cargando...' : 'Registrarse'}
-          </button>
+          </Button>
         </form>
 
-        <p className="mt-6 text-center text-gray-600">
+        <p className="mt-6 text-center text-brand-muted">
           ¿Ya tienes cuenta?{' '}
-          <Link to="/login" className="text-primary font-semibold hover:underline">
+          <Link to="/login" className="text-brand-primary font-semibold hover:underline">
             Inicia sesión
           </Link>
         </p>

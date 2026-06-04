@@ -1,27 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/shared/Navbar.jsx';
+import Button from '../../components/shared/Button.jsx';
 import { getMyOrders } from '../../services/api/orders';
-
-const statusColors = {
-  PENDING: 'bg-yellow-100 text-yellow-800',
-  ACCEPTED: 'bg-blue-100 text-blue-800',
-  ASSIGNED: 'bg-purple-100 text-purple-800',
-  PICKED_UP: 'bg-orange-100 text-orange-800',
-  IN_TRANSIT: 'bg-indigo-100 text-indigo-800',
-  DELIVERED: 'bg-green-100 text-green-800',
-  CANCELLED: 'bg-red-100 text-red-800'
-};
-
-const statusLabels = {
-  PENDING: 'Pendiente',
-  ACCEPTED: 'Aceptado',
-  ASSIGNED: 'Asignado',
-  PICKED_UP: 'Recogido',
-  IN_TRANSIT: 'En camino',
-  DELIVERED: 'Entregado',
-  CANCELLED: 'Cancelado'
-};
+import StatusBadge from '../../components/orders/StatusBadge.jsx';
+import Loader from '../../components/shared/Loader.jsx';
+import { ClipboardList } from 'lucide-react';
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
@@ -32,47 +16,44 @@ const OrderHistory = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-light">
+    <div className="min-h-screen bg-brand-background">
       <Navbar />
-      
-      <div className="px-4 py-6">
-        <h1 className="text-2xl font-bold mb-4 text-dark">Mis Pedidos</h1>
-        
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold font-display mb-2">Mis Pedidos</h1>
+        <p className="text-brand-muted mb-8">Historial de todos tus pedidos</p>
+
         {loading ? (
-          <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          </div>
+          <div className="flex justify-center py-20"><Loader size="lg" /></div>
         ) : orders.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">No tienes pedidos aún</p>
-            <Link to="/" className="text-primary font-semibold hover:underline">
-              Ver negocios
-            </Link>
+          <div className="text-center py-20 card">
+            <div className="w-16 h-16 bg-brand-elevated rounded-full flex items-center justify-center mx-auto mb-4">
+              <ClipboardList size={28} className="text-brand-subtle" />
+            </div>
+            <p className="text-brand-muted font-medium">No tienes pedidos aún</p>
+            <Link to="/"><Button variant="primary" className="mt-4">Ver negocios</Button></Link>
           </div>
         ) : (
           <div className="space-y-4">
-            {orders.map(order => (
-              <Link
-                key={order.id}
-                to={`/orders/${order.id}`}
-                className="block bg-white rounded-lg shadow p-4 hover:shadow-md transition"
-              >
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <p className="font-semibold">#{order.id.slice(0, 8)}</p>
-                    <p className="text-sm text-gray-500">{statusLabels[order.estado]}</p>
+            {orders.map((order, idx) => (
+              <Link key={order.id} to={`/orders/${order.id}`}
+                className="card hover:border-brand-primary/40 transition-all duration-300 block animate-fade-in"
+                style={{ animationDelay: `${idx * 50}ms` }}>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-brand-elevated rounded-xl flex items-center justify-center shrink-0">
+                      <span className="font-mono text-xs text-brand-muted">#{order.id.slice(0, 6)}</span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-brand-text mb-1">{order.business?.nombre || 'Negocio'}</p>
+                      <p className="text-sm text-brand-muted">
+                        {new Date(order.created_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </p>
+                    </div>
                   </div>
-                  <span className={`px-2 py-1 rounded text-xs ${statusColors[order.estado]}`}>
-                    {statusLabels[order.estado]}
-                  </span>
-                </div>
-                <div className="flex justify-between items-end">
-                  <p className="text-gray-600">
-                    {order.business?.nombre || 'Negocio'}
-                  </p>
-                  <p className="text-lg font-bold text-primary">
-                    ${order.total?.toLocaleString('es-CO')}
-                  </p>
+                  <div className="flex items-center gap-4 sm:flex-col sm:items-end">
+                    <StatusBadge status={order.estado} showIcon={false} />
+                    <span className="font-bold font-display text-brand-text">${order.total?.toLocaleString('es-CO')}</span>
+                  </div>
                 </div>
               </Link>
             ))}

@@ -36,11 +36,11 @@ function App() {
   const { user } = useAuthStore();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-brand-background text-brand-text">
       <Routes>
         {/* Public routes */}
-        <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
-        <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
+        <Route path="/login" element={!user ? <Login /> : <Navigate to="/" replace />} />
+        <Route path="/register" element={!user ? <Register /> : <Navigate to="/" replace />} />
 
         {/* Client routes */}
         <Route path="/" element={<PrivateRoute roles={['cliente']}><ClientHome /></PrivateRoute>} />
@@ -69,7 +69,7 @@ function App() {
         <Route path="/admin/reports" element={<PrivateRoute roles={['admin']}><AdminReports /></PrivateRoute>} />
 
         {/* Default redirect */}
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
   );
