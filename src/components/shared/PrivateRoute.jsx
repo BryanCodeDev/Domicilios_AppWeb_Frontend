@@ -10,8 +10,19 @@ const PrivateRoute = ({ children, roles }) => {
     return <Navigate to="/login" replace />;
   }
 
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>;
+  }
+
   if (isAuthenticated && user && roles && !roles.includes(user.rol)) {
-    return <Navigate to="/" replace />;
+    // Redirect to appropriate dashboard based on role
+    const roleDashboard = {
+      cliente: '/',
+      repartidor: '/rider',
+      negocio: '/business',
+      admin: '/admin'
+    };
+    return <Navigate to={roleDashboard[user.rol] || '/'} replace />;
   }
 
   return children;

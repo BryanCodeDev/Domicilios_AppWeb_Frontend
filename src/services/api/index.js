@@ -13,7 +13,8 @@ export const registerFcmToken = (fcm_token) => api.patch('/auth/fcm-token', { fc
 
 export const setupInterceptors = (getState) => {
   api.interceptors.request.use((config) => {
-    const { token } = getState();
+    const state = getState();
+    const token = state?.token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -27,14 +28,18 @@ export const setupInterceptors = (getState) => {
       if (error.response?.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         try {
-          const { refresh } = getState();
-          await refresh();
-          const { token } = getState();
-          originalRequest.headers.Authorization = `Bearer ${token}`;
-          return api(originalRequest);
+          const state = getState();
+          if (state?.refresh) {
+            await state.refresh();
+            const newToken = getState()?.token;
+            if (newToken) {
+              originalRequest.headers.Authorization = `Bearer ${newToken}`;
+              return api(originalRequest);
+            }
+          }
         } catch {
-          const { logout } = getState();
-          logout();
+          const state = getState();
+          state?.logout && state.logout();
         }
       }
       return Promise.reject(error);
