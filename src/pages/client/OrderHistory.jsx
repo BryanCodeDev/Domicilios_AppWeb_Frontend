@@ -17,7 +17,7 @@ const OrderHistory = () => {
   return (
     <div className="min-h-screen bg-brand-background">
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold font-display mb-2">Mis Pedidos</h1>
+        <h1 className="text-3xl font-bold font-display text-brand-text mb-2">Mis Pedidos</h1>
         <p className="text-brand-muted mb-8">Historial de todos tus pedidos</p>
 
         {loading ? (
@@ -27,15 +27,16 @@ const OrderHistory = () => {
             <div className="w-16 h-16 bg-brand-elevated rounded-full flex items-center justify-center mx-auto mb-4">
               <ClipboardList size={28} className="text-brand-subtle" />
             </div>
-            <p className="text-brand-muted font-medium">No tienes pedidos aún</p>
+            <p className="text-brand-muted font-medium mb-1">No tienes pedidos aún</p>
             <Link to="/"><Button variant="primary" className="mt-4">Ver negocios</Button></Link>
           </div>
         ) : (
           <div className="space-y-4">
             {orders.map((order, idx) => (
               <Link key={order.id} to={`/orders/${order.id}`}
-                className="card hover:border-brand-primary/40 transition-all duration-300 block animate-fade-in"
-                style={{ animationDelay: `${idx * 50}ms` }}>
+                className="card block transition-all duration-300 animate-fade-in"
+                style={{ animationDelay: `${idx * 50}ms` }}
+              >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-brand-elevated rounded-xl flex items-center justify-center shrink-0">

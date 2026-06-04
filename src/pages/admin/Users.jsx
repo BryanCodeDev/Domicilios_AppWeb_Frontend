@@ -25,12 +25,26 @@ const Users = () => {
 
   const getRoleBadge = (rol) => {
     const colors = {
-      admin: 'bg-purple-500/10 text-purple-400',
-      cliente: 'bg-blue-500/10 text-blue-400',
-      repartidor: 'bg-green-500/10 text-green-400',
-      negocio: 'bg-orange-500/10 text-orange-400',
+      admin: 'rgba(168,85,247,0.1)',
+      cliente: 'rgba(59,130,246,0.1)',
+      repartidor: 'rgba(34,197,94,0.1)',
+      negocio: 'rgba(255,184,0,0.1)',
     };
-    return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${colors[rol] || ''}`}>{rol}</span>;
+    const textColors = {
+      admin: '#C084FC',
+      cliente: '#60A5FA',
+      repartidor: '#4ADE80',
+      negocio: '#FFB800',
+    };
+    return (
+      <span className="px-2 py-0.5 rounded-full text-xs font-medium" style={{
+        background: colors[rol] || '#1F1F1F',
+        color: textColors[rol] || '#A0A0A0',
+        fontFamily: 'DM Sans, sans-serif'
+      }}>
+        {rol}
+      </span>
+    );
   };
 
   return (
@@ -38,53 +52,69 @@ const Users = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold font-display">Gestión de Usuarios</h1>
-            <p className="text-brand-muted mt-1">Administra todos los usuarios de la plataforma</p>
+            <h1 className="text-3xl font-bold font-display" style={{ fontFamily: 'Syne, sans-serif', color: '#F5F5F5' }}>Gestión de Usuarios</h1>
+            <p className="mt-1" style={{ color: '#A0A0A0', fontFamily: 'DM Sans, sans-serif' }}>Administra todos los usuarios de la plataforma</p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-brand-muted bg-brand-surface px-3 py-1.5 rounded-full border border-brand-subtle">
+            <span className="text-sm rounded-full px-3 py-1.5" style={{
+              color: '#A0A0A0',
+              background: '#161616',
+              border: '1px solid rgba(255,255,255,0.08)',
+              fontFamily: 'DM Sans, sans-serif'
+            }}>
               {users.length} usuarios
             </span>
-            <button onClick={fetchUsers} className="p-2 rounded-lg hover:bg-brand-surface transition text-brand-muted">
+            <button onClick={fetchUsers} className="p-2 rounded-lg transition" style={{ color: '#A0A0A0' }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
               <RefreshCw size={16} />
             </button>
           </div>
         </div>
 
         {loading ? (
-          <div className="space-y-3">{[1,2,3,4].map(i => <div key={i} className="h-16 bg-brand-elevated rounded-xl animate-pulse" />)}</div>
+          <div className="space-y-3">{[1,2,3,4].map(i => <div key={i} className="h-16 rounded-xl animate-pulse" style={{ background: '#1F1F1F' }} />)}</div>
         ) : (
-          <div className="card overflow-hidden p-0">
+          <div className="rounded-2xl overflow-hidden p-0" style={{
+            background: '#161616',
+            border: '1px solid rgba(255,255,255,0.08)'
+          }}>
             <table className="w-full">
               <thead>
-                <tr className="border-b border-brand-subtle">
-                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider text-brand-muted">Usuario</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider text-brand-muted">Email</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider text-brand-muted">Rol</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider text-brand-muted">Estado</th>
-                  <th className="text-right px-6 py-4 text-xs font-semibold uppercase tracking-wider text-brand-muted">Acciones</th>
+                <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#A0A0A0', fontFamily: 'DM Sans, sans-serif' }}>Usuario</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#A0A0A0', fontFamily: 'DM Sans, sans-serif' }}>Email</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#A0A0A0', fontFamily: 'DM Sans, sans-serif' }}>Rol</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#A0A0A0', fontFamily: 'DM Sans, sans-serif' }}>Estado</th>
+                  <th className="text-right px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: '#A0A0A0', fontFamily: 'DM Sans, sans-serif' }}>Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-brand-subtle">
+              <tbody className="divide-y" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
                 {users.map(user => (
-                  <tr key={user.id} className="hover:bg-brand-elevated/50 transition-colors">
+                  <tr key={user.id} className="transition-colors" onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 bg-brand-primary/10 rounded-full flex items-center justify-center">
-                          <span className="text-sm font-bold text-brand-primary">{user.nombre?.charAt(0) || '?'}</span>
+                        <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,77,0,0.08)' }}>
+                          <span className="text-sm font-bold" style={{ color: '#FF4D00', fontFamily: 'Syne, sans-serif' }}>{user.nombre?.charAt(0) || '?'}</span>
                         </div>
-                        <span className="font-medium text-brand-text">{user.nombre}</span>
+                        <span className="font-medium" style={{ color: '#F5F5F5', fontFamily: 'DM Sans, sans-serif' }}>{user.nombre}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-brand-muted font-mono">{user.email}</td>
+                    <td className="px-6 py-4 text-sm font-mono" style={{ color: '#A0A0A0' }}>{user.email}</td>
                     <td className="px-6 py-4">{getRoleBadge(user.rol)}</td>
                     <td className="px-6 py-4">
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${user.activo ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-medium`} style={{
+                        background: user.activo ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)',
+                        color: user.activo ? '#4ADE80' : '#F87171',
+                        fontFamily: 'DM Sans, sans-serif'
+                      }}>
                         {user.activo ? 'Activo' : 'Inactivo'}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <Button variant="ghost" size="sm">Editar</Button>
+                      <button className="inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-200 px-3 py-1.5 text-sm" style={{
+                        color: '#A0A0A0',
+                        background: 'transparent',
+                        fontFamily: 'DM Sans, sans-serif'
+                      }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>Editar</button>
                     </td>
                   </tr>
                 ))}

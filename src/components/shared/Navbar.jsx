@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
+import { useTheme } from '../../context/ThemeContext';
 import {
   Menu,
   X,
@@ -12,6 +13,8 @@ import {
   HelpCircle,
   Bell,
   Shield,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 const ROL_CONFIG = {
@@ -44,8 +47,8 @@ const menuItems = [
 
 const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
   const [open, setOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
   const { user, logout } = useAuthStore();
+  const { isDark, toggle } = useTheme();
   const navigate = useNavigate();
   const menuRef = useRef(null);
 
@@ -68,7 +71,6 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setOpen(false);
-        setNotifOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -76,15 +78,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
   }, []);
 
   return (
-    <nav
-      style={{
-        background: 'rgba(13,13,13,0.85)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
-      }}
-      className="sticky top-0 z-40"
-    >
+    <nav className={`sticky top-0 z-40 backdrop-blur-xl ${isDark ? 'bg-[#0D0D0D]/85' : 'bg-white/85'}`} style={{ borderBottom: isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.08)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
 
@@ -92,8 +86,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
           <div className="flex items-center gap-3">
             <button
               onClick={onToggleSidebar}
-              style={{ color: '#A0A0A0' }}
-              className="p-2 rounded-lg hover:bg-white/5 transition-colors duration-150 lg:hidden"
+              className={`p-2 rounded-lg transition-colors duration-150 lg:hidden ${isDark ? 'text-[#A0A0A0] hover:bg-white/5' : 'text-gray-500 hover:bg-black/5'}`}
             >
               {sidebarOpen
                 ? <X size={20} strokeWidth={1.75} />
@@ -102,19 +95,17 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
             </button>
 
             <div className="flex items-center gap-2.5">
-              {/* Logo mark */}
               <div
-                style={{ background: 'linear-gradient(135deg, #FF4D00 0%, #FFB800 100%)' }}
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-lg"
+                style={{ background: 'linear-gradient(135deg, #FF4D00 0%, #FFB800 100%)' }}
               >
                 <Zap size={16} strokeWidth={2.5} className="text-white" />
               </div>
-              {/* Wordmark */}
               <span
                 className="text-lg font-black hidden sm:block"
                 style={{
                   fontFamily: 'Syne, sans-serif',
-                  background: 'linear-gradient(135deg, #F5F5F5 0%, #A0A0A0 100%)',
+                  background: isDark ? 'linear-gradient(135deg, #F5F5F5 0%, #A0A0A0 100%)' : 'linear-gradient(135deg, #212121 0%, #666666 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -126,36 +117,27 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
             </div>
           </div>
 
-          {/* RIGHT — notifications + user menu */}
+          {/* RIGHT — theme toggle + user menu */}
           {user && (
             <div className="flex items-center gap-2" ref={menuRef}>
 
-              {/* Notification bell */}
+              {/* Theme toggle */}
               <button
-                onClick={() => setNotifOpen(!notifOpen)}
-                className="relative p-2.5 rounded-xl transition-colors duration-150 hover:bg-white/5"
-                style={{ color: '#A0A0A0' }}
+                onClick={toggle}
+                className={`hidden md:flex p-2.5 rounded-xl transition-colors duration-150 ${isDark ? 'hover:bg-white/5 text-[#A0A0A0]' : 'hover:bg-black/5 text-gray-500'}`}
+                title={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
               >
-                <Bell size={18} strokeWidth={1.75} />
-                {/* Unread dot */}
-                <span
-                  className="absolute top-2 right-2 w-2 h-2 rounded-full"
-                  style={{ background: '#FF4D00' }}
-                />
+                {isDark ? <Sun size={18} strokeWidth={1.75} /> : <Moon size={18} strokeWidth={1.75} />}
               </button>
 
               {/* Divider */}
-              <div
-                className="hidden md:block w-px h-6 mx-1"
-                style={{ background: 'rgba(255,255,255,0.08)' }}
-              />
+              <div className="hidden md:block w-px h-6 mx-1" style={{ background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)' }} />
 
               {/* User button */}
               <button
                 onClick={() => setOpen(!open)}
-                className="flex items-center gap-2.5 p-1.5 pr-3 rounded-xl transition-colors duration-150 hover:bg-white/5"
+                className={`flex items-center gap-2.5 p-1.5 pr-3 rounded-xl transition-colors duration-150 ${isDark ? 'hover:bg-white/5' : 'hover:bg-black/5'}`}
               >
-                {/* Avatar */}
                 <div
                   className="w-8 h-8 rounded-xl flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
                   style={{ background: 'linear-gradient(135deg, #FF4D00 0%, #FFB800 100%)' }}
@@ -163,15 +145,14 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                   {getUserInitials()}
                 </div>
 
-                {/* Name + email */}
                 <div className="hidden md:block text-left">
                   <p
                     className="text-sm font-semibold leading-tight"
-                    style={{ fontFamily: 'DM Sans, sans-serif', color: '#F5F5F5' }}
+                    style={{ fontFamily: 'DM Sans, sans-serif', color: isDark ? '#F5F5F5' : '#212121' }}
                   >
                     {user.nombre || 'Usuario'}
                   </p>
-                  <p className="text-xs leading-tight" style={{ color: '#5A5A5A' }}>
+                  <p className="text-xs leading-tight" style={{ color: isDark ? '#5A5A5A' : '#888888' }}>
                     {user.email || ''}
                   </p>
                 </div>
@@ -179,7 +160,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                 <ChevronDown
                   size={14}
                   strokeWidth={2}
-                  style={{ color: '#5A5A5A' }}
+                  style={{ color: isDark ? '#5A5A5A' : '#888888' }}
                   className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
                 />
               </button>
@@ -189,9 +170,9 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                 <div
                   className="absolute right-4 top-[68px] w-72 rounded-2xl overflow-hidden z-50"
                   style={{
-                    background: '#161616',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    boxShadow: '0 24px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04)',
+                    background: isDark ? '#161616' : '#FFFFFF',
+                    border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)',
+                    boxShadow: isDark ? '0 24px 48px rgba(0,0,0,0.6)' : '0 24px 48px rgba(0,0,0,0.12)',
                     animation: 'dropdownIn 0.18s ease-out',
                   }}
                 >
@@ -206,8 +187,8 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                   <div
                     className="px-5 py-4"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(255,77,0,0.08) 0%, rgba(255,184,0,0.04) 100%)',
-                      borderBottom: '1px solid rgba(255,255,255,0.06)',
+                      background: isDark ? 'linear-gradient(135deg, rgba(255,77,0,0.08) 0%, rgba(255,184,0,0.04) 100%)' : 'linear-gradient(135deg, rgba(255,77,0,0.05) 0%, rgba(255,184,0,0.02) 100%)',
+                      borderBottom: isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.06)',
                     }}
                   >
                     <div className="flex items-center gap-3">
@@ -220,11 +201,11 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                       <div className="min-w-0">
                         <p
                           className="text-sm font-bold truncate"
-                          style={{ fontFamily: 'Syne, sans-serif', color: '#F5F5F5' }}
+                          style={{ fontFamily: 'Syne, sans-serif', color: isDark ? '#F5F5F5' : '#212121' }}
                         >
                           {user.nombre || 'Usuario'}
                         </p>
-                        <p className="text-xs truncate mt-0.5" style={{ color: '#5A5A5A' }}>
+                        <p className="text-xs truncate mt-0.5" style={{ color: isDark ? '#5A5A5A' : '#888888' }}>
                           {user.email || ''}
                         </p>
                         <span
@@ -246,22 +227,21 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                         <button
                           key={item.title}
                           onClick={() => { navigate(item.route); setOpen(false); }}
-                          className="flex items-center gap-3.5 w-full px-5 py-3 text-left transition-colors duration-100 hover:bg-white/4"
-                          style={{ '--tw-bg-opacity': 1 }}
-                          onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
+                          className={`flex items-center gap-3.5 w-full px-5 py-3 text-left transition-colors duration-100 ${isDark ? 'hover:bg-white/4' : 'hover:bg-black/3'}`}
+                          onMouseEnter={e => e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'}
                           onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                         >
                           <div
                             className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                            style={{ background: 'rgba(255,255,255,0.05)' }}
+                            style={{ background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)' }}
                           >
-                            <Icon size={15} strokeWidth={1.75} style={{ color: '#A0A0A0' }} />
+                            <Icon size={15} strokeWidth={1.75} style={{ color: isDark ? '#A0A0A0' : '#666666' }} />
                           </div>
                           <div>
-                            <p className="text-sm font-medium" style={{ color: '#F5F5F5', fontFamily: 'DM Sans, sans-serif' }}>
+                            <p className="text-sm font-medium" style={{ color: isDark ? '#F5F5F5' : '#212121', fontFamily: 'DM Sans, sans-serif' }}>
                               {item.title}
                             </p>
-                            <p className="text-xs mt-0.5" style={{ color: '#5A5A5A' }}>
+                            <p className="text-xs mt-0.5" style={{ color: isDark ? '#5A5A5A' : '#888888' }}>
                               {item.desc}
                             </p>
                           </div>
@@ -271,10 +251,10 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                   </div>
 
                   {/* Logout */}
-                  <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }} className="py-2">
+                  <div style={{ borderTop: isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.06)' }} className="py-2">
                     <button
                       onClick={handleLogout}
-                      className="flex items-center gap-3.5 w-full px-5 py-3 text-left transition-colors duration-100"
+                      className={`flex items-center gap-3.5 w-full px-5 py-3 text-left transition-colors duration-100`}
                       onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.08)'}
                       onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                     >
@@ -288,7 +268,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                         <p className="text-sm font-medium" style={{ color: '#EF4444', fontFamily: 'DM Sans, sans-serif' }}>
                           Cerrar sesión
                         </p>
-                        <p className="text-xs mt-0.5" style={{ color: '#5A5A5A' }}>
+                        <p className="text-xs mt-0.5" style={{ color: isDark ? '#5A5A5A' : '#888888' }}>
                           Finalizar sesión actual
                         </p>
                       </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getBusinessById } from '../../services/api/businesses';
 import { getProductsByBusiness } from '../../services/api/products';
+import Button from '../../components/shared/Button.jsx';
 import Loader from '../../components/shared/Loader.jsx';
 import { Star, Clock, MapPin, ShoppingCart, Plus, ChevronLeft } from 'lucide-react';
 
@@ -52,7 +53,7 @@ const ClientBusinessDetail = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <p className="text-brand-muted mb-8">{business.descripcion}</p>
 
-        <h2 className="text-2xl font-bold font-display mb-6 text-brand-text">Menú</h2>
+        <h2 className="text-2xl font-bold font-display text-brand-text">Menú</h2>
 
         {products.length === 0 ? (
           <div className="text-center py-16 card">
@@ -64,7 +65,7 @@ const ClientBusinessDetail = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {products.map(product => (
-              <div key={product.id} className="card hover:border-brand-primary/40 transition-all duration-300">
+              <div key={product.id} className="card transition-all duration-300">
                 <div className="flex flex-col sm:flex-row justify-between gap-4">
                   <div className="flex-1">
                     <h3 className="font-semibold text-lg text-brand-text">{product.nombre}</h3>
@@ -73,9 +74,7 @@ const ClientBusinessDetail = () => {
                       ${product.precio.toLocaleString('es-CO')}
                     </p>
                   </div>
-                  <Button variant="primary" size="sm" icon={Plus} className="sm:self-end shrink-0">
-                    Agregar
-                  </Button>
+                  <Button variant="primary" size="sm" icon={Plus}>Agregar</Button>
                 </div>
               </div>
             ))}

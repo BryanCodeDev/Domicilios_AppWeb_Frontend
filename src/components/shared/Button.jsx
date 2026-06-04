@@ -1,10 +1,10 @@
 import React, { forwardRef } from 'react';
 
 const variants = {
-  primary: 'bg-brand-primary hover:bg-brand-primaryDark text-white',
-  secondary: 'bg-brand-secondary hover:bg-brand-secondaryDark text-brand-background',
-  outline: 'border border-brand-subtle hover:border-brand-primary hover:text-brand-primary',
-  ghost: 'text-brand-muted hover:text-brand-text hover:bg-brand-surface',
+  primary: 'text-white',
+  secondary: 'text-brand-background',
+  outline: 'border hover:border-brand-primary hover:text-brand-primary',
+  ghost: 'text-brand-muted hover:text-brand-text',
   danger: 'bg-red-600 hover:bg-red-700 text-white',
 };
 
@@ -17,11 +17,18 @@ const sizes = {
 const Button = forwardRef(({ children, variant = 'primary', size = 'md', className = '', disabled, loading, icon: Icon, ...props }, ref) => {
   const baseClasses = 'inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95';
 
+  const getBackground = () => {
+    if (variant === 'primary') return 'linear-gradient(135deg, #FF4D00 0%, #FFB800 100%)';
+    if (variant === 'secondary') return 'linear-gradient(135deg, #FFB800 0%, #FF4D00 100%)';
+    return '';
+  };
+
   return (
     <button
       ref={ref}
       disabled={disabled || loading}
       className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`}
+      style={variant === 'primary' || variant === 'secondary' ? { background: getBackground() } : {}}
       {...props}
     >
       {loading && (

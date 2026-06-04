@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { getOrder } from '../../services/api/orders';
 import Loader from '../../components/shared/Loader.jsx';
 import StatusBadge from '../../components/orders/StatusBadge.jsx';
+import Button from '../../components/shared/Button.jsx';
 import { ArrowLeft, MapPin, Phone, Clock, Package } from 'lucide-react';
 
 const ClientOrderDetail = () => {
@@ -36,12 +37,12 @@ const ClientOrderDetail = () => {
     <div className="min-h-screen bg-brand-background">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center gap-3 mb-8 animate-fade-in">
-          <Link to="/orders" className="p-2 rounded-lg hover:bg-brand-surface transition text-brand-muted hover:text-brand-text">
+          <Link to="/orders" className="p-2 rounded-lg text-brand-muted hover:text-brand-text hover:bg-brand-surface transition">
             <ArrowLeft size={20} />
           </Link>
           <div>
-            <h1 className="text-3xl font-bold font-display">Pedido #{order.id.slice(0, 8)}</h1>
-            <p className="text-brand-muted text-sm mt-1">
+            <h1 className="text-3xl font-bold font-display text-brand-text">Pedido #{order.id.slice(0, 8)}</h1>
+            <p className="text-sm text-brand-muted mt-1">
               {new Date(order.created_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
             </p>
           </div>
@@ -50,7 +51,7 @@ const ClientOrderDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             <div className="card animate-slide-up" style={{ animationDelay: '50ms' }}>
-              <h2 className="text-lg font-semibold font-display mb-4">Estado del pedido</h2>
+              <h2 className="text-lg font-semibold font-display mb-4 text-brand-text">Estado del pedido</h2>
               <div className="flex items-center justify-between">
                 <StatusBadge status={order.estado} showIcon />
                 <span className="text-sm text-brand-muted">#{order.id.slice(0, 8)}</span>
@@ -58,7 +59,7 @@ const ClientOrderDetail = () => {
             </div>
 
             <div className="card animate-slide-up" style={{ animationDelay: '100ms' }}>
-              <h2 className="text-lg font-semibold font-display mb-4">Items del pedido</h2>
+              <h2 className="text-lg font-semibold font-display mb-4 text-brand-text">Items del pedido</h2>
               <div className="space-y-3">
                 {(order.orderItems || []).map(item => (
                   <div key={item.id} className="flex justify-between items-center py-2 border-b border-brand-subtle last:border-b-0">
@@ -78,7 +79,7 @@ const ClientOrderDetail = () => {
 
             {order.delivery && (
               <div className="card animate-slide-up" style={{ animationDelay: '150ms' }}>
-                <h2 className="text-lg font-semibold font-display mb-4">Información de entrega</h2>
+                <h2 className="text-lg font-semibold font-display mb-4 text-brand-text">Información de entrega</h2>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 text-brand-muted">
                     <MapPin size={16} className="text-brand-primary" />
@@ -97,7 +98,7 @@ const ClientOrderDetail = () => {
 
           <div className="space-y-6">
             <div className="card animate-slide-up" style={{ animationDelay: '200ms' }}>
-              <h2 className="text-lg font-semibold font-display mb-4">Negocio</h2>
+              <h2 className="text-lg font-semibold font-display mb-4 text-brand-text">Negocio</h2>
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-xl flex items-center justify-center">
                   <span className="text-white font-bold font-display text-lg">
@@ -118,12 +119,13 @@ const ClientOrderDetail = () => {
             </div>
 
             <div className="card animate-slide-up" style={{ animationDelay: '250ms' }}>
-              <h2 className="text-lg font-semibold font-display mb-4">Seguimiento</h2>
+              <h2 className="text-lg font-semibold font-display mb-4 text-brand-text">Seguimiento</h2>
               <div className="space-y-4">
-                {['PENDING', 'ASSIGNED', 'IN_TRANSIT', 'DELIVERED'].map((status, idx) => {
+                {['PENDING', 'ASSIGNED', 'IN_TRANSIT', 'DELIVERED'].map((status) => {
                   const orderStatuses = ['PENDING', 'ACCEPTED', 'ASSIGNED', 'PICKED_UP', 'IN_TRANSIT', 'DELIVERED'];
                   const currentIdx = orderStatuses.indexOf(order.estado);
-                  const isCompleted = idx <= (currentIdx >= 4 ? 3 : idx < currentIdx ? idx : -1);
+                  const idx = ['PENDING', 'ASSIGNED', 'IN_TRANSIT', 'DELIVERED'].indexOf(status);
+                  const isCompleted = currentIdx >= 4 ? idx <= 3 : idx < currentIdx;
                   return (
                     <div key={status} className="flex items-center gap-3">
                       <div className={`w-3 h-3 rounded-full ${isCompleted ? 'bg-brand-primary' : 'bg-brand-subtle'}`} />

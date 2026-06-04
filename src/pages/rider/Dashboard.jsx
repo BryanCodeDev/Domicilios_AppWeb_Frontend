@@ -15,7 +15,7 @@ const RiderDashboard = () => {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold font-display">Dashboard</h1>
+            <h1 className="text-3xl font-bold font-display text-brand-text">Dashboard</h1>
             <p className="text-brand-muted mt-1">Bienvenido, repartidor</p>
           </div>
           <div className="flex items-center gap-2 text-sm text-brand-muted bg-brand-surface px-3 py-1.5 rounded-full border border-brand-subtle">
@@ -25,7 +25,7 @@ const RiderDashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="card group hover:border-brand-primary/40 transition-all duration-300">
+          <div className="card transition-all duration-300 group">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-brand-muted mb-1">Entregas hoy</p>
@@ -37,7 +37,7 @@ const RiderDashboard = () => {
             </div>
           </div>
 
-          <div className="card group hover:border-brand-secondary/40 transition-all duration-300">
+          <div className="card transition-all duration-300 group">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-brand-muted mb-1">Ganancias hoy</p>
@@ -49,7 +49,7 @@ const RiderDashboard = () => {
             </div>
           </div>
 
-          <div className="card group hover:border-green-500/40 transition-all duration-300">
+          <div className="card transition-all duration-300 group">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-brand-muted mb-1">Calificación</p>
@@ -68,7 +68,7 @@ const RiderDashboard = () => {
         <div className="card border-brand-primary/20 bg-gradient-to-br from-brand-primary/5 to-brand-secondary/5">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold font-display mb-1">¿Listo para cortar?</h3>
+              <h3 className="text-lg font-semibold font-display mb-1 text-brand-text">¿Listo para cortar?</h3>
               <p className="text-sm text-brand-muted">Comienza a recibir pedidos disponibles</p>
             </div>
             <Button variant="primary" size="lg" icon={ChevronRight}>

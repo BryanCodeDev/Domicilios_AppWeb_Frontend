@@ -79,15 +79,18 @@
   }
 
   .btn-primary {
-    @apply btn bg-brand-primary hover:bg-brand-primaryDark active:scale-95;
+    @apply btn text-white;
+    background: linear-gradient(135deg, #FF4D00 0%, #FFB800 100%);
   }
 
   .btn-secondary {
-    @apply btn bg-brand-secondary hover:bg-brand-secondaryDark active:scale-95;
+    @apply btn text-brand-background;
+    background: linear-gradient(135deg, #FFB800 0%, #FF4D00 100%);
   }
 
   .btn-ghost {
-    @apply btn text-brand-muted hover:text-brand-text hover:bg-brand-surface;
+    @apply btn text-brand-muted hover:text-brand-text;
+    background: transparent;
   }
 
   .btn-outline {
@@ -95,11 +98,25 @@
   }
 
   .input {
-    @apply w-full px-4 py-3 bg-brand-surface border border-brand-subtle rounded-lg text-brand-text placeholder-brand-subtle focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent transition;
+    @apply w-full px-4 py-3 border rounded-lg transition;
+    background: var(--color-surface);
+    border-color: var(--color-subtle);
+    color: var(--color-text);
+  }
+
+  .input:focus {
+    outline: none;
+    ring: 2px var(--color-primary);
   }
 
   .card {
-    @apply bg-brand-surface border border-brand-subtle rounded-xl p-4;
+    @apply rounded-2xl p-4;
+    background: var(--color-surface);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .dark .card {
+    border-color: rgba(255, 255, 255, 0.08);
   }
 
   .status-badge {
@@ -107,36 +124,53 @@
   }
 
   .status-pending {
-    @apply status-badge bg-yellow-500/10 text-yellow-600 dark:text-yellow-500;
+    @apply status-badge;
+    background: rgba(255, 184, 0, 0.1);
+    color: #FBBF24;
   }
 
   .status-accepted {
-    @apply status-badge bg-blue-500/10 text-blue-600 dark:text-blue-400;
+    @apply status-badge;
+    background: rgba(59, 130, 246, 0.1);
+    color: #60A5FA;
   }
 
   .status-assigned {
-    @apply status-badge bg-purple-500/10 text-purple-600 dark:text-purple-400;
+    @apply status-badge;
+    background: rgba(168, 85, 247, 0.1);
+    color: #C084FC;
   }
 
   .status-picked-up {
-    @apply status-badge bg-orange-500/10 text-orange-600 dark:text-orange-400;
+    @apply status-badge;
+    background: rgba(255, 136, 64, 0.1);
+    color: #FB923C;
   }
 
   .status-in-transit {
-    @apply status-badge bg-cyan-500/10 text-cyan-600 dark:text-cyan-400;
+    @apply status-badge;
+    background: rgba(6, 182, 212, 0.1);
+    color: #22D3EE;
   }
 
   .status-delivered {
-    @apply status-badge bg-green-500/10 text-green-600 dark:text-green-400;
+    @apply status-badge;
+    background: rgba(34, 197, 94, 0.1);
+    color: #4ADE80;
   }
 
   .status-cancelled {
-    @apply status-badge bg-red-500/10 text-red-600 dark:text-red-400;
+    @apply status-badge;
+    background: rgba(239, 68, 68, 0.1);
+    color: #F87171;
   }
 }
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-brand-secondary;
+    @apply bg-clip-text text-transparent bg-gradient-to-r;
+    background: linear-gradient(135deg, #FF4D00 0%, #FFB800 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
