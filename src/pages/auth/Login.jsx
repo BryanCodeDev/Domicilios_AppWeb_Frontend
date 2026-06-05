@@ -23,7 +23,7 @@ const Login = () => {
     try {
       await login(formData.email, formData.password);
     } catch (err) {
-      setError(err.response?.data?.message || 'Credenciales invÃ¡lidas');
+      setError(err.response?.data?.message || 'Credenciales inválidas');
     } finally {
       setLoading(false);
     }
@@ -31,7 +31,6 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex w-full">
-      {/* Left panel â€” branding */}
       <div className="hidden lg:flex flex-col justify-between w-1/2 bg-slate-900 dark:bg-slate-900 text-white p-12">
         <div className="relative flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center">
@@ -51,14 +50,12 @@ const Login = () => {
         </div>
 
         <p className="text-slate-400 dark:text-slate-400 text-xs">
-          Â© 2025 DomiRapid. Todos los derechos reservados.
+          © 2025 DomiRapid. Todos los derechos reservados.
         </p>
       </div>
 
-      {/* Right panel â€” form */}
       <div className="flex-1 flex items-center justify-center px-6 py-12 bg-background">
         <div className="w-full max-w-[400px] space-y-8">
-          {/* Mobile logo */}
           <div className="flex lg:hidden items-center gap-3 mb-2">
             <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
               <Zap className="w-4 h-4 text-white" />
@@ -72,16 +69,16 @@ const Login = () => {
           </div>
 
           {error && (
-            <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-error-light border border-error text-error text-sm">
+            <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-error-light border border-error text-error text-sm" role="alert">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5" noValidate>
             <div>
               <label htmlFor="email" className="label">Email</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-subtle" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-subtle" aria-hidden="true" />
                 <input
                   id="email"
                   type="email"
@@ -90,27 +87,33 @@ const Login = () => {
                   className="input pl-10"
                   placeholder="tu@email.com"
                   required
+                  autoComplete="email"
+                  aria-describedby="email-help"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="password" className="label">ContraseÃ±a</label>
+              <label htmlFor="password" className="label">Contraseña</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-subtle" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-subtle" aria-hidden="true" />
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   className="input pl-10 pr-12"
-                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                  placeholder="••••••••"
                   required
+                  autoComplete="current-password"
+                  aria-label="Contraseña"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-subtle hover:text-text transition-colors"
+                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  aria-pressed={showPassword}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -121,16 +124,17 @@ const Login = () => {
               type="submit"
               disabled={loading}
               className="w-full rounded-lg py-2.5 font-semibold text-white text-sm flex items-center justify-center gap-2 transition-all duration-200 disabled:opacity-60 bg-primary hover:bg-primary-hover"
+              aria-busy={loading}
             >
-              {loading ? 'Ingresando...' : 'Iniciar sesiÃ³n'}
+              {loading ? 'Ingresando...' : 'Iniciar sesión'}
             </button>
           </form>
 
           <div className="pt-2 border-t border-subtle text-center">
             <p className="text-sm text-muted">
-              Â¿No tienes cuenta?{' '}
+              ¿No tienes cuenta?{' '}
               <Link to="/register" className="font-semibold text-text hover:text-primary transition-colors">
-                RegÃ­strate
+                Regístrate
               </Link>
             </p>
           </div>

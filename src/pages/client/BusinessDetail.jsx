@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { getBusinessById } from '../../services/api/businesses';
-import { getProductsByBusiness } from '../../services/api/products';
-import Button from '../../components/shared/Button.jsx';
-import Loader from '../../components/shared/Loader.jsx';
-import { Star, Clock, MapPin, ShoppingCart, Plus, ChevronLeft } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { getBusinessById } from "../../services/api/businesses";
+import { getProductsByBusiness } from "../../services/api/products";
+import { useCartStore } from "../../store/cartStore";
+import Button from "../../components/shared/Button.jsx";
+import Loader from "../../components/shared/Loader.jsx";
+import { Star, Clock, MapPin, ShoppingCart, Plus, ChevronLeft } from "lucide-react";
 
 const ClientBusinessDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [business, setBusiness] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const addItem = useCartStore(state => state.addItem);
+  const items = useCartStore(state => state.items);
+  const businessId = useCartStore(state => state.businessId);
 
   useEffect(() => {
     Promise.all([getBusinessById(id), getProductsByBusiness(id)])
@@ -18,9 +23,15 @@ const ClientBusinessDetail = () => {
         setBusiness(biz.business);
         setProducts(prods.products || []);
       })
-      .catch(err => console.error('Error fetching business detail:', err))
+      .catch(err => console.error("Error fetching business detail:", err))
       .finally(() => setLoading(false));
   }, [id]);
+
+  const handleAddToCart = (product) => {
+    addItem(product);
+  };
+
+  const cartCount = items.length;
 
   if (loading) return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex justify-center items-center min-h-screen">
@@ -39,11 +50,10 @@ const ClientBusinessDetail = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Banner del Negocio */}
       <div className="relative h-40 sm:h-48 bg-primary rounded-xl overflow-hidden">
         <div className="absolute inset-0 flex items-end p-5 sm:p-8 bg-gradient-to-t from-black/40 to-transparent">
           <div>
-            <Link to="/" className="inline-flex items-center gap-1 text-white/80 hover:text-white mb-2 text-sm transition-colors">
+            <Link to="/" className="inline-flex items-center gap-1 text-white/80 hover:text-white mb-2 text-sm transition-colors" aria-label="Volver al inicio">
               <ChevronLeft size={14} /> Volver
             </Link>
             <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">{business.nombre}</h1>
@@ -52,13 +62,25 @@ const ClientBusinessDetail = () => {
             </span>
           </div>
         </div>
-      </div> {/* <-- Aquí se cerraba el banner correctamente */}
+      </div>
 
-      {/* Cuerpo / Listado de Productos */}
+      {cartCount > 0 && (
+        <div className="fixed bottom-6 right-6 z-40">
+          <Button 
+            variant="primary" 
+            onClick={() => navigate("/checkout/" + (businessId || id))}
+            className="rounded-full px-5 shadow-lg"
+            aria-label={"Ver carrito (" + cartCount + " productos)"}
+          >
+            <ShoppingCart size={18} /> {cartCount}
+          </Button>
+        </div>
+      )}
+
       <div className="pt-8">
         <p className="text-muted mb-8">{business.descripcion}</p>
 
-        <h2 className="text-xl font-semibold text-text tracking-tight mb-6">Menú</h2>
+        <h2 className="text-xl font-semibold text-text tracking-tight mb-6">Menu</h2>
 
         {products.length === 0 ? (
           <div className="text-center py-16 bg-surface border border-subtle rounded-xl">
@@ -76,10 +98,16 @@ const ClientBusinessDetail = () => {
                     <h3 className="font-semibold text-base text-text">{product.nombre}</h3>
                     <p className="text-sm text-muted mt-1">{product.descripcion}</p>
                     <p className="text-lg font-bold text-primary mt-2">
-                      ${product.precio?.toLocaleString('es-CO')}
+                      {"$" + (product.precio || 0).toLocaleString("es-CO")}
                     </p>
                   </div>
-                  <Button variant="primary" size="sm" icon={Plus} className="sm:self-center">
+                  <Button 
+                    variant="primary" 
+                    size="sm" 
+                    icon={Plus}
+                    onClick={() => handleAddToCart(product)}
+                    aria-label={"Agregar " + product.nombre + " al carrito"}
+                  >
                     Agregar
                   </Button>
                 </div>
@@ -93,3 +121,4 @@ const ClientBusinessDetail = () => {
 };
 
 export default ClientBusinessDetail;
+

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, memo, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { useTheme } from '../../context/ThemeContext';
@@ -29,24 +29,24 @@ const menuItems = [
   {
     icon: User,
     title: 'Mi perfil',
-    desc: 'Informaci贸n personal y cuenta',
+    desc: 'Informacion personal y cuenta',
     route: '/profile',
   },
   {
     icon: Settings,
-    title: 'Configuraci贸n',
+    title: 'Configuracion',
     desc: 'Preferencias y seguridad',
     route: '/settings',
   },
   {
     icon: HelpCircle,
     title: 'Centro de ayuda',
-    desc: 'Gu铆as y soporte',
+    desc: 'Gu韆s y soporte',
     route: '/help',
   },
 ];
 
-const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
+const Navbar = memo(({ onToggleSidebar, sidebarOpen }) => {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const { user, logout } = useAuthStore();
@@ -67,7 +67,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
       : parts[0][0].toUpperCase();
   };
 
-  const rolConfig = ROL_CONFIG[user?.rol] || ROL_CONFIG.cliente;
+  const rolConfig = useMemo(() => ROL_CONFIG[user?.rol] || ROL_CONFIG.cliente, [user?.rol]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -81,9 +81,9 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
 
   return (
     <nav
-      className={`sticky top-0 z-40 bg-surface border-b border-subtle ` +
-        (isDark ? 'bg-background/80' : 'bg-white/80')}
+      className={'sticky top-0 z-40 bg-surface border-b border-subtle ' + (isDark ? 'bg-background/80' : 'bg-white/80')}
       style={{ backdropFilter: 'blur(12px)' }}
+      aria-label="Barra de navegacion principal"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
@@ -91,8 +91,9 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
           <div className="flex items-center gap-3">
             <button
               onClick={onToggleSidebar}
-              className={`p-2 rounded-lg transition-colors duration-150 lg:hidden ` +
-                (isDark ? 'text-muted hover:bg-secondary-light' : 'text-muted hover:bg-secondary-light')}
+              className="p-2 rounded-lg transition-colors duration-150 lg:hidden text-muted hover:bg-secondary-light"
+              aria-label="Abrir menu"
+              aria-expanded={sidebarOpen}
             >
               {sidebarOpen
                 ? <X size={20} strokeWidth={1.75} />
@@ -100,7 +101,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
               }
             </button>
 
-            <Link to="/" className="flex items-center gap-2.5">
+            <Link to="/" className="flex items-center gap-2.5" aria-label="DomiRapid - Inicio">
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                 <Zap size={16} strokeWidth={2.5} className="text-white" />
               </div>
@@ -122,7 +123,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                 to="/login"
                 className="px-3 py-1.5 text-sm font-medium text-text dark:text-text hover:text-primary dark:hover:text-primary transition-colors"
               >
-                Iniciar Sesi贸n
+                Iniciar Sesion
               </Link>
               <Link
                 to="/register"
@@ -134,52 +135,58 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
           ) : (
             <div className="flex items-center gap-1" ref={menuRef}>
 
-              <div className={`flex items-center ${searchOpen ? 'w-64' : 'w-10'} transition-all duration-200 mr-2`}>
+              <div className={'flex items-center ' + (searchOpen ? 'w-64' : 'w-10') + ' transition-all duration-200 mr-2'}>
                 {searchOpen ? (
                   <div className="flex items-center gap-2 w-full">
-                    <Search size={16} strokeWidth={1.75} className="text-muted shrink-0" />
+                    <Search size={16} strokeWidth={1.75} className="text-muted shrink-0" aria-hidden="true" />
                     <input
                       type="text"
                       placeholder="Buscar..."
                       className="w-full bg-transparent text-sm text-text placeholder-muted outline-none"
                       autoFocus
                       onBlur={() => setTimeout(() => setSearchOpen(false), 150)}
+                      aria-label="Buscar"
                     />
-                    <button onClick={() => setSearchOpen(false)} className="p-1 rounded hover:bg-secondary-light text-muted">
-                      <X size={14} />
+                    <button onClick={() => setSearchOpen(false)} className="p-1 rounded hover:bg-secondary-light text-muted" aria-label="Cerrar busqueda">
+                      <X size={14} aria-hidden="true" />
                     </button>
                   </div>
                 ) : (
-                  <button onClick={() => setSearchOpen(true)} className="p-2 rounded-lg text-muted hover:text-text hover:bg-secondary-light transition-colors">
+                  <button onClick={() => setSearchOpen(true)} className="p-2 rounded-lg text-muted hover:text-text hover:bg-secondary-light transition-colors" aria-label="Buscar">
                     <Search size={18} strokeWidth={1.75} />
                   </button>
                 )}
               </div>
 
-              <div className="hidden md:block w-px h-5 bg-subtle mx-1" />
+              <div className="hidden md:block w-px h-5 bg-subtle mx-1" aria-hidden="true" />
 
               <button
                 className="relative p-2 rounded-lg text-muted hover:text-text hover:bg-secondary-light transition-colors"
+                aria-label="Notificaciones"
               >
                 <Bell size={18} strokeWidth={1.75} />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full" />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full" aria-hidden="true" />
               </button>
 
-              <div className="hidden md:block w-px h-5 bg-subtle mx-1" />
+              <div className="hidden md:block w-px h-5 bg-subtle mx-1" aria-hidden="true" />
 
               <button
                 onClick={toggle}
                 className="p-2 rounded-lg text-muted hover:text-text hover:bg-secondary-light transition-colors"
                 title={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+                aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
               >
                 {isDark ? <Sun size={18} strokeWidth={1.75} /> : <Moon size={18} strokeWidth={1.75} />}
               </button>
 
-              <div className="hidden md:block w-px h-5 bg-subtle mx-1" />
+              <div className="hidden md:block w-px h-5 bg-subtle mx-1" aria-hidden="true" />
 
               <button
                 onClick={() => setOpen(!open)}
-                className={`flex items-center gap-2.5 px-2 py-1.5 rounded-lg transition-colors duration-150 hover:bg-secondary-light`}
+                className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg transition-colors duration-150 hover:bg-secondary-light"
+                aria-haspopup="true"
+                aria-expanded={open}
+                aria-label="Menu de usuario"
               >
                 <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white text-xs font-bold">
                   {getUserInitials()}
@@ -189,7 +196,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                   <p className="text-sm font-medium text-text leading-tight">
                     {user.nombre || 'Usuario'}
                   </p>
-                  <p className={`text-xs leading-tight ${rolConfig.color}`}>
+                  <p className={'text-xs leading-tight ' + rolConfig.color}>
                     {rolConfig.label}
                   </p>
                 </div>
@@ -197,13 +204,15 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                 <ChevronDown
                   size={14}
                   strokeWidth={2}
-                  className={`transition-transform duration-200 text-muted ${open ? 'rotate-180' : ''}`}
+                  className={'transition-transform duration-200 text-muted ' + (open ? 'rotate-180' : '')}
+                  aria-hidden="true"
                 />
               </button>
 
               {open && (
                 <div
                   className="absolute right-4 top-[52px] w-72 rounded-xl overflow-hidden z-50 animate-in bg-surface border border-subtle shadow-lg"
+                  role="menu"
                 >
                   <div className="px-5 py-3.5 border-b border-subtle bg-secondary-light/50">
                     <div className="flex items-center gap-3">
@@ -217,8 +226,8 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                         <p className="text-xs text-muted truncate">
                           {user.email || ''}
                         </p>
-                        <span className={`inline-flex items-center gap-1 text-[10px] font-medium uppercase tracking-widest px-2 py-0.5 rounded-full mt-1.5 ${rolConfig.color}`}>
-                          <Shield size={9} strokeWidth={2.5} />
+                        <span className={'inline-flex items-center gap-1 text-[10px] font-medium uppercase tracking-widest px-2 py-0.5 rounded-full mt-1.5 ' + rolConfig.color}>
+                          <Shield size={9} strokeWidth={2.5} aria-hidden="true" />
                           {rolConfig.label}
                         </span>
                       </div>
@@ -233,8 +242,9 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                           key={item.title}
                           onClick={() => { navigate(item.route); setOpen(false); }}
                           className="flex items-center gap-3 w-full px-4 py-2.5 text-left transition-colors duration-100 hover:bg-secondary-light text-muted hover:text-text"
+                          role="menuitem"
                         >
-                          <Icon size={15} strokeWidth={1.75} className="text-muted" />
+                          <Icon size={15} strokeWidth={1.75} className="text-muted" aria-hidden="true" />
                           <div>
                             <p className="text-sm font-medium text-text">
                               {item.title}
@@ -252,14 +262,15 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                     <button
                       onClick={handleLogout}
                       className="flex items-center gap-3 w-full px-4 py-2.5 text-left transition-colors duration-100 hover:bg-error-light text-muted hover:text-error"
+                      role="menuitem"
                     >
-                      <LogOut size={15} strokeWidth={1.75} />
+                      <LogOut size={15} strokeWidth={1.75} aria-hidden="true" />
                       <div>
                         <p className="text-sm font-medium text-error">
-                          Cerrar sesi贸n
+                          Cerrar sesion
                         </p>
                         <p className="text-xs text-muted">
-                          Finalizar sesi贸n actual
+                          Finalizar sesion actual
                         </p>
                       </div>
                     </button>
@@ -272,6 +283,7 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
       </div>
     </nav>
   );
-};
+});
 
+Navbar.displayName = 'Navbar';
 export default Navbar;

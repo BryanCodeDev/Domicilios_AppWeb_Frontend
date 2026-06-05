@@ -7,7 +7,7 @@ const useSocketStore = create((set, get) => ({
   riderLocation: null,
 
   connect: (userId, userRole) => {
-    const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000', {
+    const socket = io(import.meta.env.VITE_API_URL?.replace('/api/v1', '') || 'http://localhost:5000', {
       path: '/tracking',
       transports: ['websocket'],
       query: { userId, userRole }
@@ -25,21 +25,24 @@ const useSocketStore = create((set, get) => ({
       set({ riderLocation: { lat: data.lat, lng: data.lng, orderId: data.orderId } });
     });
 
-    socket.on('order_update', () => {
-    });
-
-    socket.on('new_order', () => {
-    });
-
-    socket.on('new_delivery_assigned', () => {
-    });
+    socket.on('order_update', () => {});
+    socket.on('new_order', () => {});
+    socket.on('new_delivery_assigned', () => {});
 
     set({ socket, isConnected: true });
   },
 
   disconnect: () => {
     const { socket } = get();
-    if (socket) socket.disconnect();
+    if (socket) {
+      socket.off('connect');
+      socket.off('disconnect');
+      socket.off('rider_location_updated');
+      socket.off('order_update');
+      socket.off('new_order');
+      socket.off('new_delivery_assigned');
+      socket.disconnect();
+    }
     set({ socket: null, isConnected: false, riderLocation: null });
   },
 
