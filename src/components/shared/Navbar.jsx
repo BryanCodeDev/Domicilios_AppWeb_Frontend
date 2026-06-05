@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { useTheme } from '../../context/ThemeContext';
 import {
@@ -15,13 +15,14 @@ import {
   Shield,
   Sun,
   Moon,
+  Search,
 } from 'lucide-react';
 
 const ROL_CONFIG = {
-  cliente:    { label: 'Cliente',     color: '#3B82F6', bg: 'rgba(59,130,246,0.12)' },
-  repartidor: { label: 'Repartidor',  color: '#22C55E', bg: 'rgba(34,197,94,0.12)'  },
-  negocio:    { label: 'Negocio',     color: '#FFB800', bg: 'rgba(255,184,0,0.12)'  },
-  admin:      { label: 'Admin',       color: '#FF4D00', bg: 'rgba(255,77,0,0.12)'   },
+  cliente:    { label: 'Cliente',     color: 'text-info' },
+  repartidor: { label: 'Repartidor',  color: 'text-success' },
+  negocio:    { label: 'Negocio',     color: 'text-warning' },
+  admin:      { label: 'Admin',       color: 'text-primary' },
 };
 
 const menuItems = [
@@ -40,13 +41,14 @@ const menuItems = [
   {
     icon: HelpCircle,
     title: 'Centro de ayuda',
-    desc: 'Guías, manuales y soporte',
+    desc: 'Guías y soporte',
     route: '/help',
   },
 ];
 
 const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { user, logout } = useAuthStore();
   const { isDark, toggle } = useTheme();
   const navigate = useNavigate();
@@ -78,15 +80,19 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
   }, []);
 
   return (
-    <nav className={`sticky top-0 z-40 backdrop-blur-xl ${isDark ? 'bg-[#0D0D0D]/85' : 'bg-white/85'}`} style={{ borderBottom: isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.08)' }}>
+    <nav
+      className={`sticky top-0 z-40 bg-surface border-b border-subtle ` +
+        (isDark ? 'bg-background/80' : 'bg-white/80')}
+      style={{ backdropFilter: 'blur(12px)' }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-14">
 
-          {/* LEFT — hamburger + logo */}
           <div className="flex items-center gap-3">
             <button
               onClick={onToggleSidebar}
-              className={`p-2 rounded-lg transition-colors duration-150 lg:hidden ${isDark ? 'text-[#A0A0A0] hover:bg-white/5' : 'text-gray-500 hover:bg-black/5'}`}
+              className={`p-2 rounded-lg transition-colors duration-150 lg:hidden ` +
+                (isDark ? 'text-muted hover:bg-secondary-light' : 'text-muted hover:bg-secondary-light')}
             >
               {sidebarOpen
                 ? <X size={20} strokeWidth={1.75} />
@@ -94,124 +100,124 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
               }
             </button>
 
-            <div className="flex items-center gap-2.5">
-              <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-lg"
-                style={{ background: 'linear-gradient(135deg, #FF4D00 0%, #FFB800 100%)' }}
-              >
+            <Link to="/" className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                 <Zap size={16} strokeWidth={2.5} className="text-white" />
               </div>
-              <span
-                className="text-lg font-black hidden sm:block"
-                style={{
-                  fontFamily: 'Syne, sans-serif',
-                  background: isDark ? 'linear-gradient(135deg, #F5F5F5 0%, #A0A0A0 100%)' : 'linear-gradient(135deg, #212121 0%, #666666 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  letterSpacing: '-0.02em',
-                }}
-              >
-                Domi<span style={{ WebkitTextFillColor: '#FF4D00', color: '#FF4D00' }}>Rapid</span>
+              <span className="text-lg font-display font-bold tracking-tight text-text hidden sm:block">
+                DomiRapid
               </span>
-            </div>
+            </Link>
           </div>
 
-          {/* RIGHT — theme toggle + user menu */}
-          {user && (
-            <div className="flex items-center gap-2" ref={menuRef}>
+          {!user ? (
+            <div className="flex items-center gap-2">
+              <Link
+                to="/"
+                className="px-3 py-1.5 text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors"
+              >
+                Home
+              </Link>
+              <Link
+                to="/login"
+                className="px-3 py-1.5 text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors"
+              >
+                Iniciar Sesión
+              </Link>
+              <Link
+                to="/register"
+                className="px-3 py-1.5 text-sm font-medium bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors"
+              >
+                Registrarse
+              </Link>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1" ref={menuRef}>
 
-              {/* Theme toggle */}
+              <div className={`flex items-center ${searchOpen ? 'w-64' : 'w-10'} transition-all duration-200 mr-2`}>
+                {searchOpen ? (
+                  <div className="flex items-center gap-2 w-full">
+                    <Search size={16} strokeWidth={1.75} className="text-muted shrink-0" />
+                    <input
+                      type="text"
+                      placeholder="Buscar..."
+                      className="w-full bg-transparent text-sm text-text placeholder-muted outline-none"
+                      autoFocus
+                      onBlur={() => setTimeout(() => setSearchOpen(false), 150)}
+                    />
+                    <button onClick={() => setSearchOpen(false)} className="p-1 rounded hover:bg-secondary-light text-muted">
+                      <X size={14} />
+                    </button>
+                  </div>
+                ) : (
+                  <button onClick={() => setSearchOpen(true)} className="p-2 rounded-lg text-muted hover:text-text hover:bg-secondary-light transition-colors">
+                    <Search size={18} strokeWidth={1.75} />
+                  </button>
+                )}
+              </div>
+
+              <div className="hidden md:block w-px h-5 bg-subtle mx-1" />
+
+              <button
+                className="relative p-2 rounded-lg text-muted hover:text-text hover:bg-secondary-light transition-colors"
+              >
+                <Bell size={18} strokeWidth={1.75} />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full" />
+              </button>
+
+              <div className="hidden md:block w-px h-5 bg-subtle mx-1" />
+
               <button
                 onClick={toggle}
-                className={`hidden md:flex p-2.5 rounded-xl transition-colors duration-150 ${isDark ? 'hover:bg-white/5 text-[#A0A0A0]' : 'hover:bg-black/5 text-gray-500'}`}
+                className="p-2 rounded-lg text-muted hover:text-text hover:bg-secondary-light transition-colors"
                 title={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
               >
                 {isDark ? <Sun size={18} strokeWidth={1.75} /> : <Moon size={18} strokeWidth={1.75} />}
               </button>
 
-              {/* Divider */}
-              <div className="hidden md:block w-px h-6 mx-1" style={{ background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)' }} />
+              <div className="hidden md:block w-px h-5 bg-subtle mx-1" />
 
-              {/* User button */}
               <button
                 onClick={() => setOpen(!open)}
-                className={`flex items-center gap-2.5 p-1.5 pr-3 rounded-xl transition-colors duration-150 ${isDark ? 'hover:bg-white/5' : 'hover:bg-black/5'}`}
+                className={`flex items-center gap-2.5 px-2 py-1.5 rounded-lg transition-colors duration-150 hover:bg-secondary-light`}
               >
-                <div
-                  className="w-8 h-8 rounded-xl flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-                  style={{ background: 'linear-gradient(135deg, #FF4D00 0%, #FFB800 100%)' }}
-                >
+                <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white text-xs font-bold">
                   {getUserInitials()}
                 </div>
 
                 <div className="hidden md:block text-left">
-                  <p
-                    className="text-sm font-semibold leading-tight"
-                    style={{ fontFamily: 'DM Sans, sans-serif', color: isDark ? '#F5F5F5' : '#212121' }}
-                  >
+                  <p className="text-sm font-medium text-text leading-tight">
                     {user.nombre || 'Usuario'}
                   </p>
-                  <p className="text-xs leading-tight" style={{ color: isDark ? '#5A5A5A' : '#888888' }}>
-                    {user.email || ''}
+                  <p className={`text-xs leading-tight ${rolConfig.color}`}>
+                    {rolConfig.label}
                   </p>
                 </div>
 
                 <ChevronDown
                   size={14}
                   strokeWidth={2}
-                  style={{ color: isDark ? '#5A5A5A' : '#888888' }}
-                  className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+                  className={`transition-transform duration-200 text-muted ${open ? 'rotate-180' : ''}`}
                 />
               </button>
 
-              {/* Dropdown */}
               {open && (
                 <div
-                  className="absolute right-4 top-[68px] w-72 rounded-2xl overflow-hidden z-50"
-                  style={{
-                    background: isDark ? '#161616' : '#FFFFFF',
-                    border: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(0,0,0,0.08)',
-                    boxShadow: isDark ? '0 24px 48px rgba(0,0,0,0.6)' : '0 24px 48px rgba(0,0,0,0.12)',
-                    animation: 'dropdownIn 0.18s ease-out',
-                  }}
+                  className="absolute right-4 top-[52px] w-72 rounded-xl overflow-hidden z-50 animate-in bg-surface border border-subtle shadow-lg"
                 >
-                  <style>{`
-                    @keyframes dropdownIn {
-                      from { opacity: 0; transform: translateY(-6px) scale(0.98); }
-                      to   { opacity: 1; transform: translateY(0)   scale(1); }
-                    }
-                  `}</style>
-
-                  {/* Header */}
-                  <div
-                    className="px-5 py-4"
-                    style={{
-                      background: isDark ? 'linear-gradient(135deg, rgba(255,77,0,0.08) 0%, rgba(255,184,0,0.04) 100%)' : 'linear-gradient(135deg, rgba(255,77,0,0.05) 0%, rgba(255,184,0,0.02) 100%)',
-                      borderBottom: isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.06)',
-                    }}
-                  >
+                  <div className="px-5 py-3.5 border-b border-subtle bg-secondary-light/50">
                     <div className="flex items-center gap-3">
-                      <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
-                        style={{ background: 'linear-gradient(135deg, #FF4D00, #FFB800)' }}
-                      >
+                      <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-sm">
                         {getUserInitials()}
                       </div>
                       <div className="min-w-0">
-                        <p
-                          className="text-sm font-bold truncate"
-                          style={{ fontFamily: 'Syne, sans-serif', color: isDark ? '#F5F5F5' : '#212121' }}
-                        >
+                        <p className="text-sm font-semibold text-text truncate">
                           {user.nombre || 'Usuario'}
                         </p>
-                        <p className="text-xs truncate mt-0.5" style={{ color: isDark ? '#5A5A5A' : '#888888' }}>
+                        <p className="text-xs text-muted truncate">
                           {user.email || ''}
                         </p>
-                        <span
-                          className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full mt-1.5"
-                          style={{ color: rolConfig.color, background: rolConfig.bg }}
-                        >
+                        <span className={`inline-flex items-center gap-1 text-[10px] font-medium uppercase tracking-widest px-2 py-0.5 rounded-full mt-1.5 ${rolConfig.color}`}>
                           <Shield size={9} strokeWidth={2.5} />
                           {rolConfig.label}
                         </span>
@@ -219,29 +225,21 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                     </div>
                   </div>
 
-                  {/* Menu items */}
-                  <div className="py-2">
+                  <div className="py-1.5">
                     {menuItems.map((item) => {
                       const Icon = item.icon;
                       return (
                         <button
                           key={item.title}
                           onClick={() => { navigate(item.route); setOpen(false); }}
-                          className={`flex items-center gap-3.5 w-full px-5 py-3 text-left transition-colors duration-100 ${isDark ? 'hover:bg-white/4' : 'hover:bg-black/3'}`}
-                          onMouseEnter={e => e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'}
-                          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                          className="flex items-center gap-3 w-full px-4 py-2.5 text-left transition-colors duration-100 hover:bg-secondary-light text-muted hover:text-text"
                         >
-                          <div
-                            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                            style={{ background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)' }}
-                          >
-                            <Icon size={15} strokeWidth={1.75} style={{ color: isDark ? '#A0A0A0' : '#666666' }} />
-                          </div>
+                          <Icon size={15} strokeWidth={1.75} className="text-muted" />
                           <div>
-                            <p className="text-sm font-medium" style={{ color: isDark ? '#F5F5F5' : '#212121', fontFamily: 'DM Sans, sans-serif' }}>
+                            <p className="text-sm font-medium text-text">
                               {item.title}
                             </p>
-                            <p className="text-xs mt-0.5" style={{ color: isDark ? '#5A5A5A' : '#888888' }}>
+                            <p className="text-xs text-muted">
                               {item.desc}
                             </p>
                           </div>
@@ -250,25 +248,17 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
                     })}
                   </div>
 
-                  {/* Logout */}
-                  <div style={{ borderTop: isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.06)' }} className="py-2">
+                  <div className="border-t border-subtle py-1.5">
                     <button
                       onClick={handleLogout}
-                      className={`flex items-center gap-3.5 w-full px-5 py-3 text-left transition-colors duration-100`}
-                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.08)'}
-                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                      className="flex items-center gap-3 w-full px-4 py-2.5 text-left transition-colors duration-100 hover:bg-error-light text-muted hover:text-error"
                     >
-                      <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                        style={{ background: 'rgba(239,68,68,0.1)' }}
-                      >
-                        <LogOut size={15} strokeWidth={1.75} style={{ color: '#EF4444' }} />
-                      </div>
+                      <LogOut size={15} strokeWidth={1.75} />
                       <div>
-                        <p className="text-sm font-medium" style={{ color: '#EF4444', fontFamily: 'DM Sans, sans-serif' }}>
+                        <p className="text-sm font-medium text-error">
                           Cerrar sesión
                         </p>
-                        <p className="text-xs mt-0.5" style={{ color: isDark ? '#5A5A5A' : '#888888' }}>
+                        <p className="text-xs text-muted">
                           Finalizar sesión actual
                         </p>
                       </div>

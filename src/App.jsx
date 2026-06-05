@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
+import { useTheme } from './context/ThemeContext';
 import PrivateRoute from './components/shared/PrivateRoute.jsx';
 import Sidebar from './components/shared/Sidebar.jsx';
 import Navbar from './components/shared/Navbar.jsx';
@@ -38,6 +39,7 @@ import Register from './pages/auth/Register.jsx';
 
 function App() {
   const { user } = useAuthStore();
+  const { isDark } = useTheme();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
@@ -47,7 +49,7 @@ function App() {
   const sidebarWidth = sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64';
 
   return (
-    <div className="min-h-screen bg-brand-background text-brand-text">
+    <div className={`min-h-screen ${user ? (isDark ? 'bg-background-dark text-text-dark' : 'bg-background text-text') : 'bg-background text-text'}`}>
       {user && (
         <Sidebar
           collapsed={sidebarCollapsed}
@@ -63,7 +65,7 @@ function App() {
             sidebarOpen={mobileSidebarOpen}
           />
         )}
-        <main className="min-h-[calc(100vh-4rem)] p-4 md:p-6 lg:p-8">
+        <main className={`min-h-[calc(100vh-4rem)] ${isDark ? 'p-4 md:p-6 lg:p-8' : 'p-4 md:p-6 lg:p-8'}`}>
           <Routes>
             <Route path="/login" element={!user ? <Login /> : <Navigate to="/" replace />} />
             <Route path="/register" element={!user ? <Register /> : <Navigate to="/" replace />} />

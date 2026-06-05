@@ -4,37 +4,37 @@ import { CheckCircle, Clock, Truck, Package, Navigation, CheckCircle2, XCircle, 
 const statusConfig = {
   PENDING: {
     label: 'Pendiente',
-    className: 'status-pending',
+    className: 'bg-warning-light text-warning',
     icon: Clock,
   },
   ACCEPTED: {
     label: 'Aceptado',
-    className: 'status-accepted',
+    className: 'bg-info-light text-info',
     icon: CheckCircle,
   },
   ASSIGNED: {
     label: 'Asignado',
-    className: 'status-assigned',
+    className: 'bg-primary-light text-primary',
     icon: UserCheck,
   },
   PICKED_UP: {
     label: 'Recogido',
-    className: 'status-picked-up',
+    className: 'bg-orange-50 text-orange-600 dark:bg-orange-950 dark:text-orange-400',
     icon: Package,
   },
   IN_TRANSIT: {
     label: 'En camino',
-    className: 'status-in-transit',
+    className: 'bg-info-light text-info',
     icon: Navigation,
   },
   DELIVERED: {
     label: 'Entregado',
-    className: 'status-delivered',
+    className: 'bg-success-light text-success',
     icon: CheckCircle2,
   },
   CANCELLED: {
     label: 'Cancelado',
-    className: 'status-cancelled',
+    className: 'bg-error-light text-error',
     icon: XCircle,
   },
 };
@@ -44,8 +44,8 @@ const StatusBadge = ({ status, showIcon = true }) => {
   const Icon = config.icon;
 
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${config.className}`}>
-      {showIcon && <Icon size={12} />}
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${config.className}`}>
+      {showIcon && <Icon size={12} strokeWidth={2} />}
       {config.label}
     </span>
   );

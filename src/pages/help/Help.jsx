@@ -21,36 +21,34 @@ const Help = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-brand-background">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-background">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold font-display text-brand-text">Centro de ayuda</h1>
-          <p className="text-brand-muted mt-1">Guías, manuales y soporte</p>
+          <h1 className="text-2xl font-bold text-text tracking-tight">Centro de ayuda</h1>
+          <p className="text-muted text-sm mt-1">Guías, manuales y soporte</p>
         </div>
 
-        <div className="card">
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <div key={index} className="border-b border-brand-subtle last:border-0">
-                <button
-                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="w-full flex items-center justify-between p-4 text-left hover:bg-brand-elevated rounded-lg transition"
-                >
-                  <span className="font-medium text-brand-text">{faq.question}</span>
-                  {openFaq === index ? (
-                    <ChevronDown size={18} className="text-brand-muted" />
-                  ) : (
-                    <ChevronRight size={18} className="text-brand-muted" />
-                  )}
-                </button>
-                {openFaq === index && (
-                  <div className="px-4 pb-4">
-                    <p className="text-brand-muted">{faq.answer}</p>
-                  </div>
+        <div className="bg-surface border border-subtle rounded-xl divide-y divide-subtle">
+          {faqs.map((faq, index) => (
+            <div key={index} className={index !== faqs.length - 1 ? 'border-b border-subtle' : ''}>
+              <button
+                onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                className="w-full flex items-center justify-between p-5 text-left transition-colors hover:bg-secondary-light"
+              >
+                <span className="font-medium text-text">{faq.question}</span>
+                {openFaq === index ? (
+                  <ChevronDown size={18} className="text-muted shrink-0 ml-4" />
+                ) : (
+                  <ChevronRight size={18} className="text-muted shrink-0 ml-4" />
                 )}
-              </div>
-            ))}
-          </div>
+              </button>
+              {openFaq === index && (
+                <div className="px-5 pb-5">
+                  <p className="text-muted text-sm leading-relaxed">{faq.answer}</p>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </div>

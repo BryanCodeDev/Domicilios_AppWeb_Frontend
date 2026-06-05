@@ -10,63 +10,65 @@ const Tracking = () => {
   const riderLocation = null;
 
   return (
-    <div className="min-h-screen bg-brand-background">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="flex items-center gap-3 mb-8 animate-fade-in">
-          <button onClick={() => window.history.back()} className="p-2 rounded-lg hover:bg-brand-surface transition text-brand-muted hover:text-brand-text">
-            <ArrowLeft size={20} />
+    <div className="min-h-screen bg-background">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center gap-3 mb-8">
+          <button onClick={() => window.history.back()} className="p-2 rounded-lg hover:bg-secondary-light transition text-muted hover:text-text">
+            <ArrowLeft size={20} strokeWidth={1.75} />
           </button>
           <div>
-            <h1 className="text-3xl font-bold font-display">Rastreo del Pedido</h1>
-            <p className="text-brand-muted text-sm mt-1">Sigue al repartidor en tiempo real</p>
+            <h1 className="text-2xl font-bold text-text tracking-tight">Rastreo del Pedido</h1>
+            <p className="text-sm text-muted mt-1">Sigue al repartidor en tiempo real</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="card h-80 bg-brand-elevated flex items-center justify-center animate-slide-up">
+          <div className="lg:col-span-2">
+            <div className="bg-surface border border-subtle rounded-xl h-64 sm:h-80 flex items-center justify-center">
               <div className="text-center">
-                <MapPin size={40} className="text-brand-primary mx-auto mb-3" />
+                <MapPin size={40} className="text-primary mx-auto mb-3" strokeWidth={1.25} />
                 <StatusBadge status="IN_TRANSIT" />
-                <p className="text-sm text-brand-muted mt-3">Pedido #{orderId?.slice(0, 8)}</p>
+                <p className="text-sm text-muted mt-3">Pedido #{orderId?.slice(0, 8)}</p>
               </div>
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="card animate-slide-up">
-              <h3 className="font-semibold font-display mb-4">Estado del pedido</h3>
-              <div className="flex items-center gap-3 text-brand-muted">
-                <Navigation size={16} className="text-brand-primary" />
-                <span>En camino</span>
-              </div>
-              <div className="flex items-center gap-3 text-brand-muted mt-2">
-                <Clock size={16} className="text-brand-primary" />
-                <span>Tiempo estimado: 15 min</span>
+          <div className="space-y-5">
+            <div className="bg-surface border border-subtle rounded-xl p-5">
+              <h3 className="text-sm font-semibold text-text mb-4">Estado del pedido</h3>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-sm text-muted">
+                  <Navigation size={16} className="text-primary shrink-0" />
+                  <span>En camino</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-muted">
+                  <Clock size={16} className="text-primary shrink-0" />
+                  <span>Tiempo estimado: 15 min</span>
+                </div>
               </div>
             </div>
 
-            <div className="card animate-slide-up">
-              <h3 className="font-semibold font-display mb-4">Repartidor</h3>
+            <div className="bg-surface border border-subtle rounded-xl p-5">
+              <h3 className="text-sm font-semibold text-text mb-4">Repartidor</h3>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-brand-primary/10 rounded-lg flex items-center justify-center">
-                  <span className="font-bold text-brand-primary">AR</span>
+                <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">AR</span>
                 </div>
                 <div>
-                  <p className="font-medium text-brand-text">Andrés Roa</p>
-                  <p className="text-xs text-brand-muted">Repartidor</p>
+                  <p className="font-medium text-text">Andrés Roa</p>
+                  <p className="text-xs text-muted">Repartidor</p>
                 </div>
               </div>
             </div>
 
-            <div className="card animate-slide-up">
-              <h3 className="font-semibold font-display mb-4">Ubicación del repartidor</h3>
+            <div className="bg-surface border border-subtle rounded-xl p-5">
+              <h3 className="text-sm font-semibold text-text mb-3">Ubicación del repartidor</h3>
               {riderLocation ? (
-                <p className="text-sm text-brand-text font-mono">
+                <p className="text-sm text-text font-mono">
                   {riderLocation.lat.toFixed(4)}, {riderLocation.lng.toFixed(4)}
                 </p>
               ) : (
-                <p className="text-sm text-brand-muted">Esperando ubicación...</p>
+                <p className="text-sm text-muted">Esperando ubicación...</p>
               )}
             </div>
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../../store/authStore';
 import Button from '../../../components/shared/Button.jsx';
 import { ShoppingBag, Store, Star, HelpCircle, ChevronRight } from 'lucide-react';
 
@@ -13,29 +12,32 @@ const Guides = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-brand-background">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-background">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold font-display text-brand-text">Guías, manuales y soporte</h1>
-          <p className="text-brand-muted mt-1">Aprende a usar la plataforma</p>
+          <h1 className="text-2xl font-bold text-text tracking-tight">Guías y soporte</h1>
+          <p className="text-muted text-sm mt-1">Aprende a usar la plataforma</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {guides.map((guide) => (
-            <a
-              key={guide.title}
-              href={guide.to}
-              className="card flex items-center justify-between group hover:border-brand-primary/50"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-brand-primary/10 rounded-lg flex items-center justify-center">
-                  <guide.icon size={24} className="text-brand-primary" />
+          {guides.map((guide) => {
+            const Icon = guide.icon;
+            return (
+              <a
+                key={guide.title}
+                href={guide.to}
+                className="flex items-center justify-between p-5 bg-surface border border-subtle rounded-xl transition-all duration-200 hover:border-primary/30 group"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-11 h-11 bg-secondary-light rounded-lg flex items-center justify-center shrink-0">
+                    <Icon size={20} className="text-primary" strokeWidth={1.75} />
+                  </div>
+                  <span className="font-medium text-text">{guide.title}</span>
                 </div>
-                <span className="font-medium text-brand-text">{guide.title}</span>
-              </div>
-              <ChevronRight size={18} className="text-brand-muted group-hover:text-brand-primary transition" />
-            </a>
-          ))}
+                <ChevronRight size={18} className="text-muted group-hover:text-primary transition-colors shrink-0" />
+              </a>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../../components/shared/Button.jsx';
-import { Building2, TrendingUp, Users, FileText, Download } from 'lucide-react';
+import { Users, Building2, TrendingUp, Download, FileText } from 'lucide-react';
 
 const AdminReports = () => {
   const stats = [
@@ -10,86 +10,44 @@ const AdminReports = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-brand-background">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold font-display" style={{ fontFamily: 'Syne, sans-serif', color: '#F5F5F5' }}>Reportes</h1>
-          <p className="mt-1" style={{ color: '#A0A0A0', fontFamily: 'DM Sans, sans-serif' }}>Métricas y exportaciones de la plataforma</p>
-        </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-text tracking-tight">Reportes</h1>
+        <p className="text-muted text-sm mt-1">Métricas y exportaciones de la plataforma</p>
+      </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          {stats.map((stat, idx) => (
-            <div key={idx} className="rounded-2xl p-4 transition-all duration-300" style={{
-              background: '#161616',
-              border: '1px solid rgba(255,255,255,0.08)'
-            }} onMouseEnter={e => e.currentTarget.style.border = '1px solid rgba(255,77,0,0.4)'} onMouseLeave={e => e.currentTarget.style.border = '1px solid rgba(255,255,255,0.08)'}>
-              <stat.icon size={22} className="mb-3" style={{ color: '#FF4D00' }} />
-              <p className="text-2xl font-bold font-display" style={{ color: '#F5F5F5', fontFamily: 'Syne, sans-serif' }}>{stat.value}</p>
-              <p className="text-sm mt-1" style={{ color: '#A0A0A0', fontFamily: 'DM Sans, sans-serif' }}>{stat.label}</p>
-            </div>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        {stats.map((stat, idx) => (
+          <div key={idx} className="bg-surface border border-subtle rounded-xl p-5 transition-all duration-200">
+            <stat.icon size={20} className="text-primary mb-3" strokeWidth={1.75} />
+            <p className="text-2xl font-bold text-text font-display">{stat.value}</p>
+            <p className="text-sm text-muted mt-1">{stat.label}</p>
+          </div>
+        ))}
+      </div>
 
-        <div className="rounded-2xl p-4" style={{
-          background: '#161616',
-          border: '1px solid rgba(255,255,255,0.08)'
-        }}>
-          <h2 className="text-lg font-semibold font-display mb-6" style={{ fontFamily: 'Syne, sans-serif', color: '#F5F5F5' }}>Exportar reportes</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="rounded-xl p-4 transition-all duration-300" style={{
-              background: '#1F1F1F',
-              border: '1px solid rgba(255,255,255,0.06)'
-            }} onMouseEnter={e => e.currentTarget.style.border = '1px solid rgba(255,77,0,0.4)'} onMouseLeave={e => e.currentTarget.style.border = '1px solid rgba(255,255,255,0.06)'}>
-              <h3 className="font-semibold mb-1" style={{ color: '#F5F5F5', fontFamily: 'DM Sans, sans-serif' }}>Reporte de ventas</h3>
-              <p className="text-sm mb-4" style={{ color: '#A0A0A0', fontFamily: 'DM Sans, sans-serif' }}>Todas las transacciones del periodo</p>
-              <button className="inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-200 px-3 py-1.5 text-sm" style={{
-                background: 'linear-gradient(135deg, #FF4D00 0%, #FFB800 100%)',
-                color: '#FFFFFF',
-                fontFamily: 'DM Sans, sans-serif'
-              }}><Download size={14} /> Descargar CSV</button>
-            </div>
-            <div className="rounded-xl p-4 transition-all duration-300" style={{
-              background: '#1F1F1F',
-              border: '1px solid rgba(255,255,255,0.06)'
-            }} onMouseEnter={e => e.currentTarget.style.border = '1px solid rgba(255,77,0,0.4)'} onMouseLeave={e => e.currentTarget.style.border = '1px solid rgba(255,255,255,0.06)'}>
-              <h3 className="font-semibold mb-1" style={{ color: '#F5F5F5', fontFamily: 'DM Sans, sans-serif' }}>Reporte de usuarios</h3>
-              <p className="text-sm mb-4" style={{ color: '#A0A0A0', fontFamily: 'DM Sans, sans-serif' }}>Usuarios registrados y actividad</p>
-              <button className="inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-200 px-3 py-1.5 text-sm" style={{
-                background: 'linear-gradient(135deg, #FF4D00 0%, #FFB800 100%)',
-                color: '#FFFFFF',
-                fontFamily: 'DM Sans, sans-serif'
-              }}><Download size={14} /> Descargar CSV</button>
-            </div>
-            <div className="rounded-xl p-4 transition-all duration-300" style={{
-              background: '#1F1F1F',
-              border: '1px solid rgba(255,255,255,0.06)'
-            }} onMouseEnter={e => e.currentTarget.style.border = '1px solid rgba(255,77,0,0.4)'} onMouseLeave={e => e.currentTarget.style.border = '1px solid rgba(255,255,255,0.06)'}>
-              <h3 className="font-semibold mb-1" style={{ color: '#F5F5F5', fontFamily: 'DM Sans, sans-serif' }}>Top negocios</h3>
-              <p className="text-sm mb-4" style={{ color: '#A0A0A0', fontFamily: 'DM Sans, sans-serif' }}>Ranking por ventas y pedidos</p>
-              <button className="inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-200 px-3 py-1.5 text-sm" style={{
-                background: '#1F1F1F',
-                color: '#F5F5F5',
-                border: '1px solid rgba(255,255,255,0.08)',
-                fontFamily: 'DM Sans, sans-serif'
-              }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseLeave={e => e.currentTarget.style.background = '#1F1F1F'}>
-                <Download size={14} /> Descargar Excel
-              </button>
-            </div>
-            <div className="rounded-xl p-4 transition-all duration-300" style={{
-              background: '#1F1F1F',
-              border: '1px solid rgba(255,255,255,0.06)'
-            }} onMouseEnter={e => e.currentTarget.style.border = '1px solid rgba(255,77,0,0.4)'} onMouseLeave={e => e.currentTarget.style.border = '1px solid rgba(255,255,255,0.06)'}>
-              <h3 className="font-semibold mb-1" style={{ color: '#F5F5F5', fontFamily: 'DM Sans, sans-serif' }}>Calificaciones</h3>
-              <p className="text-sm mb-4" style={{ color: '#A0A0A0', fontFamily: 'DM Sans, sans-serif' }}>Ratings de clientes y repartidores</p>
-              <button className="inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-200 px-3 py-1.5 text-sm" style={{
-                background: '#1F1F1F',
-                color: '#F5F5F5',
-                border: '1px solid rgba(255,255,255,0.08)',
-                fontFamily: 'DM Sans, sans-serif'
-              }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseLeave={e => e.currentTarget.style.background = '#1F1F1F'}>
-                <Download size={14} /> Descargar Excel
-              </button>
-            </div>
+      <div className="bg-surface border border-subtle rounded-xl p-5 sm:p-6">
+        <h2 className="text-base font-semibold text-text mb-5">Exportar reportes</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-secondary-light rounded-lg p-5 border border-subtle transition-colors hover:border-primary/30">
+            <h3 className="font-semibold text-text mb-1">Reporte de ventas</h3>
+            <p className="text-sm text-muted mb-4">Todas las transacciones del periodo</p>
+            <Button variant="primary" icon={Download} size="sm">Descargar CSV</Button>
+          </div>
+          <div className="bg-secondary-light rounded-lg p-5 border border-subtle transition-colors hover:border-primary/30">
+            <h3 className="font-semibold text-text mb-1">Reporte de usuarios</h3>
+            <p className="text-sm text-muted mb-4">Usuarios registrados y actividad</p>
+            <Button variant="primary" icon={Download} size="sm">Descargar CSV</Button>
+          </div>
+          <div className="bg-secondary-light rounded-lg p-5 border border-subtle transition-colors hover:border-primary/30">
+            <h3 className="font-semibold text-text mb-1">Top negocios</h3>
+            <p className="text-sm text-muted mb-4">Ranking por ventas y pedidos</p>
+            <Button variant="outline" icon={Download} size="sm">Descargar Excel</Button>
+          </div>
+          <div className="bg-secondary-light rounded-lg p-5 border border-subtle transition-colors hover:border-primary/30">
+            <h3 className="font-semibold text-text mb-1">Calificaciones</h3>
+            <p className="text-sm text-muted mb-4">Ratings de clientes y repartidores</p>
+            <Button variant="outline" icon={Download} size="sm">Descargar Excel</Button>
           </div>
         </div>
       </div>

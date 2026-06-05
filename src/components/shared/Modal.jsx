@@ -25,14 +25,14 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className={`relative w-full ${sizes[size]} bg-brand-surface border border-brand-subtle rounded-xl shadow-2xl animate-fade-in`}>
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div className={`relative w-full ${sizes[size]} bg-surface border border-subtle rounded-xl shadow-lg animate-in`}>
         {(title || onClose) && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-brand-subtle">
-            {title && <h3 className="text-lg font-semibold font-display text-brand-text">{title}</h3>}
+          <div className="flex items-center justify-between px-6 py-4 border-b border-subtle">
+            {title && <h3 className="text-lg font-semibold text-text">{title}</h3>}
             {onClose && (
-              <button onClick={onClose} className="p-1 rounded-lg text-brand-muted hover:text-brand-text hover:bg-brand-elevated transition">
-                <X size={20} />
+              <button onClick={onClose} className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-secondary-light transition-colors">
+                <X size={20} strokeWidth={1.75} />
               </button>
             )}
           </div>

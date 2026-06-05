@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
-import { Mail, Lock, User, Phone, AlertCircle, Loader2 } from 'lucide-react';
-import Button from '../../components/shared/Button.jsx';
-import Loader from '../../components/shared/Loader.jsx';
+import { Mail, Lock, User, Phone, AlertCircle } from 'lucide-react';
+
+const ROL_OPTIONS = [
+  { value: 'cliente', label: 'Cliente', desc: 'Realiza pedidos en tu barrio' },
+  { value: 'repartidor', label: 'Repartidor', desc: 'Entrega pedidos y gana dinero' },
+  { value: 'negocio', label: 'Negocio', desc: 'Vende tus productos en la app' },
+];
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    nombre: '',
-    email: '',
-    password: '',
-    rol: 'cliente',
-    phone: ''
-  });
+  const [formData, setFormData] = useState({ nombre: '', email: '', password: '', rol: 'cliente', phone: '' });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const { register } = useAuthStore();
   const navigate = useNavigate();
+  const selectedRol = ROL_OPTIONS.find(r => r.value === formData.rol);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,112 +31,88 @@ const Register = () => {
     }
   };
 
+  const InputField = ({ id, label, type = 'text', placeholder, icon: Icon, value, onChange, required }) => (
+    <div className="space-y-1.5">
+      <label htmlFor={id} className="block text-sm font-medium text-slate-700">{label}</label>
+      <div className="relative">
+        <Icon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+        <input
+          type={type} id={id} placeholder={placeholder} value={value} onChange={onChange} required={required}
+          className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 text-sm outline-none transition-all duration-200 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20"
+        />
+      </div>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-secondary/20 via-brand-background to-brand-primary/20 flex items-center justify-center px-4 animate-fade-in">
-      <div className="max-w-md w-full card animate-slide-up">
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold font-display text-gradient">
-            Domicilios
-          </h1>
-          <p className="text-brand-muted mt-2">Crea tu cuenta</p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
+      <div className="w-full max-w-[460px] space-y-6">
+        <div className="text-center space-y-3">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-slate-900 mb-1">
+            <Mail className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 tracking-tight font-display">Crea tu cuenta</h1>
+            <p className="text-slate-500 text-sm mt-1">Únete a la plataforma</p>
+          </div>
         </div>
 
-        {error && (
-          <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 text-red-500 mb-4 text-center animate-fade-in">
-            <AlertCircle size={18} />
-            {error}
-          </div>
-        )}
+        <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-5">
+          {error && (
+            <div className="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+              <AlertCircle size={15} />
+              {error}
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="nombre" className="block text-sm font-medium text-brand-muted mb-1">Nombre completo</label>
-            <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted size-5" />
-              <input
-                type="text"
-                id="nombre"
-                placeholder="Nombre completo"
-                value={formData.nombre}
-                onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-                className="input pl-10"
-                required
-              />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <InputField id="nombre" label="Nombre completo" icon={User} placeholder="Camila Rodríguez"
+              value={formData.nombre} onChange={(e) => setFormData({ ...formData, nombre: e.target.value })} required />
+
+            <InputField id="email" label="Email" type="email" icon={Mail} placeholder="tu@email.com"
+              value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
+
+            <InputField id="password" label="Contraseña" type="password" icon={Lock} placeholder="Mínimo 8 caracteres"
+              value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} required />
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-slate-700">Tipo de cuenta</label>
+              <div className="grid grid-cols-3 gap-2">
+                {ROL_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setFormData({ ...formData, rol: opt.value })}
+                    className="flex flex-col items-center gap-1 px-2 py-3 rounded-lg border text-center transition-all duration-200"
+                    style={{
+                      background: formData.rol === opt.value ? '#F1F5F9' : '#FFFFFF',
+                      borderColor: formData.rol === opt.value ? '#0F172A' : '#E2E8F0',
+                      color: formData.rol === opt.value ? '#0F172A' : '#475569',
+                    }}
+                  >
+                    <span className="text-sm font-semibold">{opt.label}</span>
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-slate-500 pl-1">{selectedRol?.desc}</p>
             </div>
-          </div>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-brand-muted mb-1">Email</label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted size-5" />
-              <input
-                type="email"
-                id="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="input pl-10"
-                required
-              />
-            </div>
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-brand-muted mb-1">Contraseña</label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted size-5" />
-              <input
-                type="password"
-                id="password"
-                placeholder="Contraseña"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="input pl-10"
-                required
-              />
-            </div>
-          </div>
-          <div className="mb-4">
-            <label htmlFor="rol" className="block text-sm font-medium text-brand-muted mb-1">Rol</label>
-            <select
-              id="rol"
-              value={formData.rol}
-              onChange={(e) => setFormData({ ...formData, rol: e.target.value })}
-              className="input"
+
+            <InputField id="phone" label="Teléfono (opcional)" type="tel" icon={Phone} placeholder="+57 300 000 0000"
+              value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-lg py-2.5 font-semibold text-white text-sm flex items-center justify-center gap-2 transition-all duration-200 disabled:opacity-60 bg-slate-900 hover:bg-slate-800 mt-2"
             >
-              <option value="cliente">Cliente</option>
-              <option value="repartidor">Repartidor</option>
-              <option value="negocio">Negocio</option>
-            </select>
-          </div>
-          <div className="mb-4">
-            <label htmlFor="phone" className="block text-sm font-medium text-brand-muted mb-1">Teléfono (opcional)</label>
-            <div className="relative">
-              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted size-5" />
-              <input
-                type="tel"
-                id="phone"
-                placeholder="Teléfono (opcional)"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="input pl-10"
-              />
-            </div>
-          </div>
+              {loading ? 'Creando cuenta...' : 'Crear cuenta'}
+            </button>
+          </form>
+        </div>
 
-          <Button
-            type="submit"
-            variant="secondary"
-            size="lg"
-            className="w-full"
-            loading={loading}
-            disabled={loading}
-          >
-            {loading ? 'Cargando...' : 'Registrarse'}
-          </Button>
-        </form>
-
-        <p className="mt-6 text-center text-brand-muted">
+        <p className="text-center text-sm text-slate-600">
           ¿Ya tienes cuenta?{' '}
-          <Link to="/login" className="text-brand-primary font-semibold hover:underline">
+          <Link to="/login" className="font-semibold text-slate-900 hover:text-slate-700 transition-colors">
             Inicia sesión
           </Link>
         </p>

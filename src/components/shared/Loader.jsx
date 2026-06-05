@@ -1,15 +1,15 @@
 import React from 'react';
 
-const Loader = ({ size = 'md', className = '' }) => {
-  const sizes = {
-    sm: 'h-4 w-4',
-    md: 'h-8 w-8',
-    lg: 'h-12 w-12',
-  };
+const sizes = {
+  sm: 'w-4 h-4',
+  md: 'w-8 h-8',
+  lg: 'w-12 h-12',
+};
 
+const Loader = ({ size = 'md', className = '' }) => {
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <div className={`${sizes[size]} animate-spin rounded-full border-b-2 border-brand-primary`} />
+      <div className={`${sizes[size]} animate-spin rounded-full border-2 border-subtle border-t-primary`} />
     </div>
   );
 };

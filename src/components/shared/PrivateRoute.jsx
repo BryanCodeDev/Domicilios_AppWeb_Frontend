@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
-import PropTypes from 'prop-types';
+import Loader from '../shared/Loader.jsx';
 
 const PrivateRoute = ({ children, roles }) => {
   const { isAuthenticated, user, isLoading } = useAuthStore();
@@ -11,11 +11,14 @@ const PrivateRoute = ({ children, roles }) => {
   }
 
   if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader size="lg" />
+      </div>
+    );
   }
 
   if (isAuthenticated && user && roles && !roles.includes(user.rol)) {
-    // Redirect to appropriate dashboard based on role
     const roleDashboard = {
       cliente: '/',
       repartidor: '/rider',
@@ -26,11 +29,6 @@ const PrivateRoute = ({ children, roles }) => {
   }
 
   return children;
-};
-
-PrivateRoute.propTypes = {
-  children: PropTypes.node.isRequired,
-  roles: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default PrivateRoute;
