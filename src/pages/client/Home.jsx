@@ -37,10 +37,10 @@ const ClientHome = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
       <div className="relative h-64 sm:h-72 overflow-hidden bg-primary">
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center px-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
               Pide lo que quieras
             </h1>
@@ -63,8 +63,8 @@ const ClientHome = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-10">
-        <div className="bg-surface border border-subtle rounded-xl p-5 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-surface border border-subtle rounded-xl p-5 shadow-sm mb-8">
           <div className="flex items-center gap-2 mb-4">
             <SlidersHorizontal size={18} className="text-primary" />
             <h2 className="text-base font-semibold text-text">Categorías</h2>
@@ -90,59 +90,59 @@ const ClientHome = () => {
             ))}
           </div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pb-16">
-        <div className="flex items-end justify-between mb-6">
-          <div>
-            <h2 className="text-xl font-bold text-text tracking-tight">Negocios cercanos</h2>
-            <p className="text-sm text-muted mt-1">{filtered.length} resultados</p>
-          </div>
-        </div>
-
-        {loading ? (
-          <div className="flex justify-center py-20"><Loader size="lg" /></div>
-        ) : filtered.length === 0 ? (
-          <div className="text-center py-16 bg-surface border border-subtle rounded-xl">
-            <div className="w-16 h-16 bg-secondary-light rounded-full flex items-center justify-center mx-auto mb-4">
-              <Store size={28} className="text-subtle" />
+        <div>
+          <div className="flex items-end justify-between mb-6">
+            <div>
+              <h2 className="text-xl font-bold text-text tracking-tight">Negocios cercanos</h2>
+              <p className="text-sm text-muted mt-1">{filtered.length} resultados</p>
             </div>
-            <p className="text-text font-medium mb-1">No se encontraron negocios</p>
-            <p className="text-sm text-muted mb-4">Prueba ajustando los filtros de búsqueda</p>
-            <Button variant="secondary" onClick={() => { setSelectedCategory(''); setSearchQuery(''); }}>
-              Limpiar filtros
-            </Button>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {filtered.map((business, idx) => (
-              <Link key={business.id} to={`/business/${business.id}`}
-                className="group bg-surface border border-subtle rounded-xl p-5 transition-all duration-200 hover:border-primary/30 hover:shadow-md"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary-light flex items-center justify-center shrink-0">
-                    <span className="text-lg font-bold text-primary">{business.nombre.charAt(0)}</span>
+
+          {loading ? (
+            <div className="flex justify-center py-20"><Loader size="lg" /></div>
+          ) : filtered.length === 0 ? (
+            <div className="text-center py-16 bg-surface border border-subtle rounded-xl">
+              <div className="w-16 h-16 bg-secondary-light rounded-full flex items-center justify-center mx-auto mb-4">
+                <Store size={28} className="text-subtle" />
+              </div>
+              <p className="text-text font-medium mb-1">No se encontraron negocios</p>
+              <p className="text-sm text-muted mb-4">Prueba ajustando los filtros de búsqueda</p>
+              <Button variant="secondary" onClick={() => { setSelectedCategory(''); setSearchQuery(''); }}>
+                Limpiar filtros
+              </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {filtered.map((business, idx) => (
+                <Link key={business.id} to={`/business/${business.id}`}
+                  className="group bg-surface border border-subtle rounded-xl p-5 transition-all duration-200 hover:border-primary/30 hover:shadow-md"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-lg bg-primary-light flex items-center justify-center shrink-0">
+                      <span className="text-lg font-bold text-primary">{business.nombre.charAt(0)}</span>
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="font-semibold text-text group-hover:text-primary transition-colors truncate">{business.nombre}</h3>
+                      <span className="inline-block text-xs font-medium text-muted bg-secondary-light px-2 py-0.5 rounded-full mt-1">{business.categoria}</span>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="font-semibold text-text group-hover:text-primary transition-colors truncate">{business.nombre}</h3>
-                    <span className="inline-block text-xs font-medium text-muted bg-secondary-light px-2 py-0.5 rounded-full mt-1">{business.categoria}</span>
+
+                  <p className="text-sm text-muted line-clamp-2 mb-4">{business.descripcion}</p>
+
+                  <div className="flex items-center gap-4 text-xs text-muted mb-4">
+                    {business.horario && <span className="flex items-center gap-1"><Clock size={12} />{business.horario}</span>}
+                    {business.direccion && <span className="flex items-center gap-1 truncate"><MapPin size={12} />{business.direccion.split(',')[0]}</span>}
                   </div>
-                </div>
 
-                <p className="text-sm text-muted line-clamp-2 mb-4">{business.descripcion}</p>
-
-                <div className="flex items-center gap-4 text-xs text-muted mb-4">
-                  {business.horario && <span className="flex items-center gap-1"><Clock size={12} />{business.horario}</span>}
-                  {business.direccion && <span className="flex items-center gap-1 truncate"><MapPin size={12} />{business.direccion.split(',')[0]}</span>}
-                </div>
-
-                <Button variant="secondary" className="w-full" size="sm">Ver menú</Button>
-              </Link>
-            ))}
-          </div>
-        )}
+                  <Button variant="secondary" className="w-full" size="sm">Ver menú</Button>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -21,9 +21,8 @@ const SecuritySettings = () => {
   const inputClasses = "w-full px-4 py-2.5 bg-surface border border-subtle rounded-lg text-text placeholder-subtle focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-colors";
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-8">
           <h1 className="text-2xl font-bold text-text tracking-tight">Seguridad</h1>
           <p className="text-muted text-sm mt-1">Gestiona tu seguridad y privacidad</p>
         </div>
@@ -87,8 +86,7 @@ const SecuritySettings = () => {
             <h2 className="text-lg font-semibold text-text">Autenticación de dos factores</h2>
           </div>
           <p className="text-sm text-muted pl-[52px]">Próximamente</p>
-        </div>
-      </div>
+</div>
     </div>
   );
 };

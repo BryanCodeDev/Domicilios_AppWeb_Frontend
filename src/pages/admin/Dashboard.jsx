@@ -23,9 +23,8 @@ const AdminDashboard = () => {
   const recentOrders = ordersData ? ordersData.slice(0, 5) : [];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-8">
           <h1 className="text-2xl font-bold text-text tracking-tight">Dashboard</h1>
           <p className="text-muted text-sm mt-1">Métricas generales de la plataforma</p>
         </div>
@@ -96,7 +95,6 @@ const AdminDashboard = () => {
             )}
           </div>
         </div>
-      </div>
     </div>
   );
 };

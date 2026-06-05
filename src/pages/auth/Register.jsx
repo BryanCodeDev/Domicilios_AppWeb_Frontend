@@ -45,7 +45,7 @@ const Register = () => {
   );
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 w-full h-full">
       <div className="w-full max-w-[460px] space-y-6">
         <div className="text-center space-y-3">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-slate-900 mb-1">

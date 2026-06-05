@@ -49,7 +49,7 @@ function App() {
   const sidebarWidth = sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64';
 
   return (
-    <div className={`min-h-screen ${user ? (isDark ? 'bg-background-dark text-text-dark' : 'bg-background text-text') : 'bg-background text-text'}`}>
+    <div className={`min-h-screen w-full overflow-x-hidden ${isDark ? 'bg-background-dark text-text-dark' : 'bg-background text-text'}`}>
       {user && (
         <Sidebar
           collapsed={sidebarCollapsed}
@@ -65,7 +65,7 @@ function App() {
             sidebarOpen={mobileSidebarOpen}
           />
         )}
-        <main className={`min-h-[calc(100vh-4rem)] ${isDark ? 'p-4 md:p-6 lg:p-8' : 'p-4 md:p-6 lg:p-8'}`}>
+        <main className={`min-h-screen p-4 md:p-6 lg:p-8 ${user ? 'pt-20' : ''}`}>
           <Routes>
             <Route path="/login" element={!user ? <Login /> : <Navigate to="/" replace />} />
             <Route path="/register" element={!user ? <Register /> : <Navigate to="/" replace />} />
@@ -92,7 +92,6 @@ function App() {
             <Route path="/admin/businesses" element={<PrivateRoute roles={['admin']}><AdminBusinesses /></PrivateRoute>} />
             <Route path="/admin/reports" element={<PrivateRoute roles={['admin']}><AdminReports /></PrivateRoute>} />
 
-            {/* Profile & Settings routes */}
             <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
             <Route path="/profile/personal" element={<PrivateRoute><PersonalInfo /></PrivateRoute>} />
             <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />

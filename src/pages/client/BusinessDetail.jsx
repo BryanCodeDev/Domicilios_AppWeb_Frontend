@@ -13,44 +13,49 @@ const ClientBusinessDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([getBusinessById(id), getProductsByBusiness(id)]).then(([biz, prods]) => {
-      setBusiness(biz.business);
-      setProducts(prods.products || []);
-    }).finally(() => setLoading(false));
+    Promise.all([getBusinessById(id), getProductsByBusiness(id)])
+      .then(([biz, prods]) => {
+        setBusiness(biz.business);
+        setProducts(prods.products || []);
+      })
+      .catch(err => console.error('Error fetching business detail:', err))
+      .finally(() => setLoading(false));
   }, [id]);
 
   if (loading) return (
-    <div className="min-h-screen bg-background">
-      <div className="flex justify-center py-20"><Loader size="lg" /></div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex justify-center items-center min-h-screen">
+      <Loader size="lg" />
     </div>
   );
 
   if (!business) return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <p className="text-muted">Negocio no encontrado</p>
-        <Link to="/"><Button variant="primary" className="mt-4">Volver al inicio</Button></Link>
-      </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+      <p className="text-muted">Negocio no encontrado</p>
+      <Link to="/" className="block mt-4">
+        <Button variant="primary">Volver al inicio</Button>
+      </Link>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="relative h-40 sm:h-48 bg-primary">
-        <div className="absolute inset-0 flex items-end p-5 sm:p-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Banner del Negocio */}
+      <div className="relative h-40 sm:h-48 bg-primary rounded-xl overflow-hidden">
+        <div className="absolute inset-0 flex items-end p-5 sm:p-8 bg-gradient-to-t from-black/40 to-transparent">
           <div>
             <Link to="/" className="inline-flex items-center gap-1 text-white/80 hover:text-white mb-2 text-sm transition-colors">
               <ChevronLeft size={14} /> Volver
             </Link>
             <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">{business.nombre}</h1>
-            <span className="inline-block text-sm font-medium text-white/90 bg-white/10 px-2.5 py-1 rounded-full mt-2">
+            <span className="inline-block text-sm font-medium text-white/90 bg-white/20 px-2.5 py-1 rounded-full mt-2 backdrop-blur-sm">
               {business.categoria}
             </span>
           </div>
         </div>
-      </div>
+      </div> {/* <-- Aquí se cerraba el banner correctamente */}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Cuerpo / Listado de Productos */}
+      <div className="pt-8">
         <p className="text-muted mb-8">{business.descripcion}</p>
 
         <h2 className="text-xl font-semibold text-text tracking-tight mb-6">Menú</h2>
@@ -71,10 +76,12 @@ const ClientBusinessDetail = () => {
                     <h3 className="font-semibold text-base text-text">{product.nombre}</h3>
                     <p className="text-sm text-muted mt-1">{product.descripcion}</p>
                     <p className="text-lg font-bold text-primary mt-2">
-                      ${product.precio.toLocaleString('es-CO')}
+                      ${product.precio?.toLocaleString('es-CO')}
                     </p>
                   </div>
-                  <Button variant="primary" size="sm" icon={Plus} className="sm:self-center">Agregar</Button>
+                  <Button variant="primary" size="sm" icon={Plus} className="sm:self-center">
+                    Agregar
+                  </Button>
                 </div>
               </div>
             ))}

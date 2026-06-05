@@ -9,9 +9,8 @@ const Catalog = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
             <h1 className="text-2xl font-bold text-text tracking-tight">Mi Catálogo</h1>
             <p className="text-muted text-sm mt-1">Gestiona tus productos</p>
@@ -40,8 +39,7 @@ const Catalog = () => {
               </div>
             </div>
           ))}
-        </div>
-      </div>
+</div>
     </div>
   );
 };

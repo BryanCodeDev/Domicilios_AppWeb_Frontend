@@ -29,7 +29,7 @@ const ProductForm = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-2xl font-bold text-text tracking-tight mb-8">
         {isEditing ? 'Editar' : 'Crear'} Producto
       </h1>
