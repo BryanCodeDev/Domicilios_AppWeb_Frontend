@@ -2,3 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --color-background: #F8FAFC;
+    --color-surface: #FFFFFF;
+    --color-elevated: #F1F5F9;
+    --color-border: #E2E8F0;
+    --color-text: #0F172A;
+    --color-muted: #64748B;
+    --color-subtle: #CBD5E1;
+    --color-primary: #1565C0;
+    --color-primary-hover: #0D47A1;
+    --color-primary-light: #E3F2FD;
+    --color-secondary: #64748B;
+    --color-secondary-light: #F1F5F9;
+    --color-success: #2E7D32;
+    --color-success-light: #E8F5E9;
+    --color-warning: #B45309;
+    --color-warning-light: #FFF7ED;
+    --color-error: #C62828;
+    --color-error-light: #FFEBEE;
+    --color-info: #0277BD;
+    --color-info-light: #E1F5FE;
+  }
+
+  .dark {
+    --color-background: #0B1220;
+    --color-surface: #111827;
+    --color-elevated: #1F2937;
+    --color-border: #1E293B;
+    --color-text: #F1F5F9;
+    --color-muted: #94A3B8;
+    --color-subtle: #475569;
+    --color-primary: #1565C0;
+    --color-primary-hover: #0D47A1;
+    --color-primary-light: #1E3A5F;
+    --color-secondary: #64748B;
+    --color-secondary-light: #1E293B;
+    --color-success: #2E7D32;
+    --color-success-light: #1B3A1F;
+    --color-warning: #B45309;
+    --color-warning-light: #3D2A04;
+    --color-error: #C62828;
+    --color-error-light: #3B1414;
+    --color-info: #0277BD;
+    --color-info-light: #143B52;
+  }
+}
+
+@layer components {
+  .label {
+    @apply block text-sm font-medium text-muted mb-1.5;
+  }
+
+  .input {
+    @apply w-full px-4 py-2.5 bg-surface border border-subtle rounded-lg text-text placeholder-subtle text-sm outline-none transition-all duration-200 focus:border-primary focus:ring-2 focus:ring-primary/20;
+  }
+
+  .input-icon-left {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-subtle;
+  }
+}

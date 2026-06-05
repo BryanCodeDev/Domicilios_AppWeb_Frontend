@@ -58,10 +58,11 @@ const AdminDashboard = () => {
                     </div>
                     <div className="text-right">
                       <p className="font-semibold text-text text-sm">${(order.total || 0).toLocaleString('es-CO')}</p>
-                      <span className="text-xs font-medium px-2 py-0.5 rounded-full" style={{
-                        background: order.estado === 'IN_TRANSIT' ? 'rgba(2,132,199,0.08)' : order.estado === 'DELIVERED' ? 'rgba(5,150,105,0.08)' : 'rgba(217,119,6,0.08)',
-                        color: order.estado === 'IN_TRANSIT' ? '#0284C7' : order.estado === 'DELIVERED' ? '#059669' : '#D97706',
-                      }}>{order.estado}</span>
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                        order.estado === 'IN_TRANSIT' ? 'bg-info-light text-info' :
+                        order.estado === 'DELIVERED' ? 'bg-success-light text-success' :
+                        'bg-warning-light text-warning'
+                      }`}>{order.estado}</span>
                     </div>
                   </div>
                 ))}

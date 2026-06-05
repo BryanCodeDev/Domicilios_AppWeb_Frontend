@@ -30,12 +30,12 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex w-full h-full">
+    <div className="min-h-screen flex w-full">
       {/* Left panel — branding */}
-      <div className="hidden lg:flex flex-col justify-between w-1/2 bg-slate-900 text-white p-12">
+      <div className="hidden lg:flex flex-col justify-between w-1/2 bg-slate-900 dark:bg-slate-900 text-white p-12">
         <div className="relative flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center">
-            <Zap className="w-5 h-5 text-slate-900" />
+            <Zap className="w-5 h-5 text-slate-900 dark:text-slate-900" />
           </div>
           <span className="text-lg font-bold tracking-tight font-display">DomiRapid</span>
         </div>
@@ -45,49 +45,49 @@ const Login = () => {
             La plataforma que<br />
             mueve tu negocio.
           </h1>
-          <p className="text-slate-300 text-lg leading-relaxed max-w-sm">
+          <p className="text-slate-300 dark:text-slate-300 text-lg leading-relaxed max-w-sm">
             Gestiona pedidos, negocios y repartidores desde un solo panel de control.
           </p>
         </div>
 
-        <p className="text-slate-400 text-xs">
+        <p className="text-slate-400 dark:text-slate-400 text-xs">
           © 2025 DomiRapid. Todos los derechos reservados.
         </p>
       </div>
 
       {/* Right panel — form */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-gray-50">
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-background">
         <div className="w-full max-w-[400px] space-y-8">
           {/* Mobile logo */}
           <div className="flex lg:hidden items-center gap-3 mb-2">
-            <div className="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
               <Zap className="w-4 h-4 text-white" />
             </div>
-            <span className="text-lg font-bold tracking-tight font-display text-slate-900">DomiRapid</span>
+            <span className="text-lg font-bold tracking-tight font-display text-text">DomiRapid</span>
           </div>
 
           <div>
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight font-display">Bienvenido de vuelta</h2>
-            <p className="mt-2 text-slate-500">Ingresa tus credenciales para continuar</p>
+            <h2 className="text-3xl font-bold text-text tracking-tight font-display">Bienvenido de vuelta</h2>
+            <p className="mt-2 text-muted">Ingresa tus credenciales para continuar</p>
           </div>
 
           {error && (
-            <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+            <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-error-light border border-error text-error text-sm">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+              <label htmlFor="email" className="label">Email</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-subtle" />
                 <input
                   id="email"
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 text-sm outline-none transition-all duration-200 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20"
+                  className="input pl-10"
                   placeholder="tu@email.com"
                   required
                 />
@@ -95,22 +95,22 @@ const Login = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">Contraseña</label>
+              <label htmlFor="password" className="label">Contraseña</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-subtle" />
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full pl-10 pr-12 py-2.5 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 text-sm outline-none transition-all duration-200 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20"
+                  className="input pl-10 pr-12"
                   placeholder="••••••••"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-subtle hover:text-text transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -120,16 +120,16 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg py-2.5 font-semibold text-white text-sm flex items-center justify-center gap-2 transition-all duration-200 disabled:opacity-60 bg-slate-900 hover:bg-slate-800"
+              className="w-full rounded-lg py-2.5 font-semibold text-white text-sm flex items-center justify-center gap-2 transition-all duration-200 disabled:opacity-60 bg-primary hover:bg-primary-hover"
             >
               {loading ? 'Ingresando...' : 'Iniciar sesión'}
             </button>
           </form>
 
-          <div className="pt-2 border-t border-slate-100 text-center">
-            <p className="text-sm text-slate-600">
+          <div className="pt-2 border-t border-subtle text-center">
+            <p className="text-sm text-muted">
               ¿No tienes cuenta?{' '}
-              <Link to="/register" className="font-semibold text-slate-900 hover:text-slate-700 transition-colors">
+              <Link to="/register" className="font-semibold text-text hover:text-primary transition-colors">
                 Regístrate
               </Link>
             </p>

@@ -49,7 +49,7 @@ function App() {
   const sidebarWidth = sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64';
 
   return (
-    <div className={`min-h-screen w-full overflow-x-hidden ${isDark ? 'bg-background-dark text-text-dark' : 'bg-background text-text'}`}>
+    <div className={`min-h-screen w-full overflow-x-hidden bg-background text-text`}>
       {user && (
         <Sidebar
           collapsed={sidebarCollapsed}

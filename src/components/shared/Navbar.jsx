@@ -114,19 +114,19 @@ const Navbar = ({ onToggleSidebar, sidebarOpen }) => {
             <div className="flex items-center gap-2">
               <Link
                 to="/"
-                className="px-3 py-1.5 text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors"
+                className="px-3 py-1.5 text-sm font-medium text-text dark:text-text hover:text-primary dark:hover:text-primary transition-colors"
               >
                 Home
               </Link>
               <Link
                 to="/login"
-                className="px-3 py-1.5 text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors"
+                className="px-3 py-1.5 text-sm font-medium text-text dark:text-text hover:text-primary dark:hover:text-primary transition-colors"
               >
                 Iniciar Sesión
               </Link>
               <Link
                 to="/register"
-                className="px-3 py-1.5 text-sm font-medium bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors"
+                className="px-3 py-1.5 text-sm font-medium bg-primary dark:bg-primary text-white rounded-lg hover:bg-primary-hover dark:hover:bg-primary-hover transition-colors"
               >
                 Registrarse
               </Link>

@@ -13,7 +13,7 @@ const Button = forwardRef(({ children, variant = 'primary', size = 'md', classNa
     secondary: 'bg-transparent text-primary border border-subtle hover:border-primary hover:bg-primary-light',
     outline: 'bg-transparent text-muted border border-subtle hover:border-muted hover:text-text',
     ghost: 'bg-transparent text-muted hover:text-text hover:bg-secondary-light border border-transparent',
-    danger: 'bg-error text-white hover:bg-red-700 shadow-sm hover:shadow-md',
+    danger: 'bg-error text-white hover:bg-error/90 shadow-sm hover:shadow-md',
   };
 
   return (
