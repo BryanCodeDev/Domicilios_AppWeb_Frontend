@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+ï»¿import { useEffect } from 'react';
 import { requestPermission, onForegroundMessage } from '../utils/firebase';
 import { registerFcmToken } from '../services/api/index';
 import { useToastStore } from '../store/toastStore';
@@ -19,7 +19,8 @@ export const usePushNotifications = () => {
     setup();
 
     onForegroundMessage((payload) => {
-      useToastStore.getState().addToast({ type: 'info', message: payload.notification?.title || 'Nueva notificación' });
+      useToastStore.getState().addToast({ type: 'info', message: payload.notification?.title || 'Nueva notificacion' });
     });
   }, []);
 };
+

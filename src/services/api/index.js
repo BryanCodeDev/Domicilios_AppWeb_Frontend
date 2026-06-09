@@ -1,4 +1,4 @@
-import axios from 'axios';
+﻿import axios from 'axios';
 import { useToastStore } from '../../store/toastStore';
 import { useAuthStore } from '../../store/authStore';
 
@@ -76,7 +76,7 @@ export const setupInterceptors = (getState) => {
           processQueue(new Error('Unauthorized'), null);
           const state = getState();
           state?.logout && state.logout();
-          showToast('error', 'Sesi�n expirada. Inicia sesi�n nuevamente.');
+          showToast('error', 'Sesion expirada. Inicia sesion nuevamente.');
         } finally {
           isRefreshing = false;
         }
@@ -84,7 +84,7 @@ export const setupInterceptors = (getState) => {
       }
 
       if (error.response?.status === 403) {
-        showToast('error', 'Sin permisos para esta acci�n');
+        showToast('error', 'Sin permisos para esta accion');
       } else if (error.response?.status === 404) {
         showToast('error', 'Recurso no encontrado');
       } else if (error.response?.status === 422) {
@@ -92,14 +92,14 @@ export const setupInterceptors = (getState) => {
         if (errors) {
           Object.values(errors).forEach(err => showToast('error', err));
         } else {
-          showToast('error', error.response?.data?.message || 'Error de validaci�n');
+          showToast('error', error.response?.data?.message || 'Error de validacion');
         }
       } else if (error.response?.status >= 500) {
         showToast('error', 'Error del servidor, intenta de nuevo');
       } else if (error.code === 'ECONNABORTED') {
         showToast('warning', 'Tiempo de espera agotado');
       } else if (!error.response) {
-        showToast('error', 'Sin conexi�n a internet');
+        showToast('error', 'Sin conexion a internet');
       }
 
       return Promise.reject(error);
@@ -108,5 +108,4 @@ export const setupInterceptors = (getState) => {
 };
 
 export default api;
-
 

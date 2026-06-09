@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+ï»¿import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -14,7 +14,7 @@ const BusinessMap = ({ lat, lng, nombre, direccion }) => {
   const [showPopup, setShowPopup] = useState(true);
 
   if (!lat || !lng) {
-    return <div className='bg-secondary-light rounded-lg h-48 flex items-center justify-center text-muted text-sm'>Ubicación no disponible</div>;
+    return <div className='bg-secondary-light rounded-lg h-48 flex items-center justify-center text-muted text-sm'>Ubicacion no disponible</div>;
   }
 
   return (
@@ -28,4 +28,5 @@ const BusinessMap = ({ lat, lng, nombre, direccion }) => {
 };
 
 export default BusinessMap;
+
 
