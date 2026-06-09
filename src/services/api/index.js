@@ -76,7 +76,7 @@ export const setupInterceptors = (getState) => {
           processQueue(new Error('Unauthorized'), null);
           const state = getState();
           state?.logout && state.logout();
-          showToast('error', 'Sesión expirada. Inicia sesión nuevamente.');
+          showToast('error', 'Sesiï¿½n expirada. Inicia sesiï¿½n nuevamente.');
         } finally {
           isRefreshing = false;
         }
@@ -84,7 +84,7 @@ export const setupInterceptors = (getState) => {
       }
 
       if (error.response?.status === 403) {
-        showToast('error', 'Sin permisos para esta acción');
+        showToast('error', 'Sin permisos para esta acciï¿½n');
       } else if (error.response?.status === 404) {
         showToast('error', 'Recurso no encontrado');
       } else if (error.response?.status === 422) {
@@ -92,14 +92,14 @@ export const setupInterceptors = (getState) => {
         if (errors) {
           Object.values(errors).forEach(err => showToast('error', err));
         } else {
-          showToast('error', error.response?.data?.message || 'Error de validación');
+          showToast('error', error.response?.data?.message || 'Error de validaciï¿½n');
         }
       } else if (error.response?.status >= 500) {
         showToast('error', 'Error del servidor, intenta de nuevo');
       } else if (error.code === 'ECONNABORTED') {
         showToast('warning', 'Tiempo de espera agotado');
       } else if (!error.response) {
-        showToast('error', 'Sin conexión a internet');
+        showToast('error', 'Sin conexiï¿½n a internet');
       }
 
       return Promise.reject(error);
@@ -108,4 +108,5 @@ export const setupInterceptors = (getState) => {
 };
 
 export default api;
+
 
