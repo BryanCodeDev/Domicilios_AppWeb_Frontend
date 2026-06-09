@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { useToastStore } from '../../store/toastStore';
+import { useAuthStore } from '../../store/authStore';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1',
@@ -19,8 +21,12 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
+const showToast = (type, message) => {
+  useToastStore.getState().addToast({ type, message });
+};
+
 export const login = (email, password) => api.post('/auth/login', { email, password }).then(res => res.data);
-export const register = (data) => api.post('/auth/register', data).then(res => res.data);
+export const register = (data) => api.post('/auth/register', { ...data }).then(res => res.data);
 export const getProfile = () => api.get('/auth/me').then(res => res.data);
 export const refreshToken = (refreshToken) => api.post('/auth/refresh', { refreshToken }).then(res => res.data);
 export const registerFcmToken = (fcm_token) => api.patch('/auth/fcm-token', { fcm_token }).then(res => res.data);
@@ -66,17 +72,40 @@ export const setupInterceptors = (getState) => {
               return api(originalRequest);
             }
           }
-        } catch (err) {
-          processQueue(err, null);
+        } catch {
+          processQueue(new Error('Unauthorized'), null);
           const state = getState();
           state?.logout && state.logout();
+          showToast('error', 'Sesión expirada. Inicia sesión nuevamente.');
         } finally {
           isRefreshing = false;
         }
+        return Promise.reject(error);
       }
+
+      if (error.response?.status === 403) {
+        showToast('error', 'Sin permisos para esta acción');
+      } else if (error.response?.status === 404) {
+        showToast('error', 'Recurso no encontrado');
+      } else if (error.response?.status === 422) {
+        const errors = error.response?.data?.errors;
+        if (errors) {
+          Object.values(errors).forEach(err => showToast('error', err));
+        } else {
+          showToast('error', error.response?.data?.message || 'Error de validación');
+        }
+      } else if (error.response?.status >= 500) {
+        showToast('error', 'Error del servidor, intenta de nuevo');
+      } else if (error.code === 'ECONNABORTED') {
+        showToast('warning', 'Tiempo de espera agotado');
+      } else if (!error.response) {
+        showToast('error', 'Sin conexión a internet');
+      }
+
       return Promise.reject(error);
     }
   );
 };
 
 export default api;
+

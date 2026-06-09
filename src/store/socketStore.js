@@ -5,6 +5,7 @@ const useSocketStore = create((set, get) => ({
   socket: null,
   isConnected: false,
   riderLocation: null,
+  callbacks: {},
 
   connect: (userId, userRole) => {
     const socket = io(import.meta.env.VITE_API_URL?.replace('/api/v1', '') || 'http://localhost:5000', {
@@ -21,13 +22,26 @@ const useSocketStore = create((set, get) => ({
       set({ isConnected: false });
     });
 
-    socket.on('rider_location_updated', (data) => {
-      set({ riderLocation: { lat: data.lat, lng: data.lng, orderId: data.orderId } });
+    socket.on('order:update', (data) => {
+      const callback = get().callbacks.onOrderUpdate;
+      if (callback) callback(data);
     });
 
-    socket.on('order_update', () => {});
-    socket.on('new_order', () => {});
-    socket.on('new_delivery_assigned', () => {});
+    socket.on('rider:location', (data) => {
+      set({ riderLocation: { lat: data.lat, lng: data.lng, orderId: data.orderId } });
+      const callback = get().callbacks.onRiderLocation;
+      if (callback) callback(data);
+    });
+
+    socket.on('order:new', (data) => {
+      const callback = get().callbacks.onNewOrder;
+      if (callback) callback(data);
+    });
+
+    socket.on('rider:assigned', (data) => {
+      const callback = get().callbacks.onRiderAssigned;
+      if (callback) callback(data);
+    });
 
     set({ socket, isConnected: true });
   },
@@ -35,35 +49,45 @@ const useSocketStore = create((set, get) => ({
   disconnect: () => {
     const { socket } = get();
     if (socket) {
-      socket.off('connect');
-      socket.off('disconnect');
-      socket.off('rider_location_updated');
-      socket.off('order_update');
-      socket.off('new_order');
-      socket.off('new_delivery_assigned');
       socket.disconnect();
     }
-    set({ socket: null, isConnected: false, riderLocation: null });
+    set({ socket: null, isConnected: false, riderLocation: null, callbacks: {} });
   },
 
-  joinOrder: (orderId) => {
+  joinOrderRoom: (orderId) => {
     const { socket } = get();
-    if (socket) socket.emit('join_order', orderId);
+    if (socket) socket.emit('join:order', orderId);
   },
 
-  joinBusiness: (businessId) => {
+  joinBusinessRoom: (businessId) => {
     const { socket } = get();
-    if (socket) socket.emit('join_business', businessId);
+    if (socket) socket.emit('join:business', businessId);
   },
 
-  joinRider: (riderId) => {
+  joinRiderRoom: (riderId) => {
     const { socket } = get();
-    if (socket) socket.emit('join_rider', riderId);
+    if (socket) socket.emit('join:rider', riderId);
   },
 
-  sendRiderLocation: (orderId, lat, lng) => {
+  listenOrderUpdates: (callback) => {
+    set(state => ({ callbacks: { ...state.callbacks, onOrderUpdate: callback } }));
+  },
+
+  listenRiderLocation: (callback) => {
+    set(state => ({ callbacks: { ...state.callbacks, onRiderLocation: callback } }));
+  },
+
+  listenNewOrders: (callback) => {
+    set(state => ({ callbacks: { ...state.callbacks, onNewOrder: callback } }));
+  },
+
+  listenRiderAssigned: (callback) => {
+    set(state => ({ callbacks: { ...state.callbacks, onRiderAssigned: callback } }));
+  },
+
+  emitLocation: (data) => {
     const { socket } = get();
-    if (socket) socket.emit('rider_location', { orderId, lat, lng });
+    if (socket) socket.emit('rider:location', data);
   }
 }));
 
